@@ -3,7 +3,6 @@ const getScript = (isTelemetryEnabled: boolean) => `<script>
 		const messagesDiv = document.getElementById('messages');
 		const messageInput = document.getElementById('messageInput');
 		const sendBtn = document.getElementById('sendBtn');
-		const statusDiv = document.getElementById('status');
 		const statusTextDiv = document.getElementById('statusText');
 		const filePickerModal = document.getElementById('filePickerModal');
 		const fileSearchInput = document.getElementById('fileSearchInput');
@@ -62,24 +61,18 @@ const getScript = (isTelemetryEnabled: boolean) => `<script>
 				const headerDiv = document.createElement('div');
 				headerDiv.className = 'message-header';
 				
-				const iconDiv = document.createElement('div');
-				iconDiv.className = \`message-icon \${type}\`;
-				
 				const labelDiv = document.createElement('div');
 				labelDiv.className = 'message-label';
 				
-				// Set icon and label based on type
+				// Set label based on type
 				switch(type) {
 					case 'user':
-						iconDiv.textContent = '👤';
-						labelDiv.textContent = 'You';
+						labelDiv.textContent = 'USER';
 						break;
 					case 'claude':
-						iconDiv.textContent = '🤖';
 						labelDiv.textContent = 'Claude';
 						break;
 					case 'error':
-						iconDiv.textContent = '⚠️';
 						labelDiv.textContent = 'Error';
 						break;
 				}
@@ -91,7 +84,6 @@ const getScript = (isTelemetryEnabled: boolean) => `<script>
 				copyBtn.onclick = () => copyMessageContent(messageDiv);
 				copyBtn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>';
 				
-				headerDiv.appendChild(iconDiv);
 				headerDiv.appendChild(labelDiv);
 				headerDiv.appendChild(copyBtn);
 				messageDiv.appendChild(headerDiv);
@@ -111,19 +103,6 @@ const getScript = (isTelemetryEnabled: boolean) => `<script>
 			
 			messageDiv.appendChild(contentDiv);
 			
-			// Check if this is a permission-related error and add yolo mode button
-			if (type === 'error' && isPermissionError(content)) {
-				const yoloSuggestion = document.createElement('div');
-				yoloSuggestion.className = 'yolo-suggestion';
-				yoloSuggestion.innerHTML = \`
-					<div class="yolo-suggestion-text">
-						<span>💡 This looks like a permission issue. You can enable Yolo Mode to skip all permission checks.</span>
-					</div>
-					<button class="yolo-suggestion-btn" onclick="enableYoloMode()">Enable Yolo Mode</button>
-				\`;
-				messageDiv.appendChild(yoloSuggestion);
-			}
-			
 			messagesDiv.appendChild(messageDiv);
 			moveProcessingIndicatorToLast();
 			scrollToBottomIfNeeded(messagesDiv, shouldScroll);
@@ -137,13 +116,9 @@ const getScript = (isTelemetryEnabled: boolean) => `<script>
 			const messageDiv = document.createElement('div');
 			messageDiv.className = 'message tool';
 			
-			// Create modern header with icon
+			// Create header
 			const headerDiv = document.createElement('div');
 			headerDiv.className = 'tool-header';
-			
-			const iconDiv = document.createElement('div');
-			iconDiv.className = 'tool-icon';
-			iconDiv.textContent = '🔧';
 			
 			const toolInfoElement = document.createElement('div');
 			toolInfoElement.className = 'tool-info';
@@ -154,7 +129,6 @@ const getScript = (isTelemetryEnabled: boolean) => `<script>
 			}
 			toolInfoElement.textContent = toolName;
 			
-			headerDiv.appendChild(iconDiv);
 			headerDiv.appendChild(toolInfoElement);
 			messageDiv.appendChild(headerDiv);
 			
@@ -328,18 +302,10 @@ const getScript = (isTelemetryEnabled: boolean) => `<script>
 			const headerDiv = document.createElement('div');
 			headerDiv.className = 'message-header';
 			
-			const iconDiv = document.createElement('div');
-			iconDiv.className = data.isError ? 'message-icon error' : 'message-icon';
-			iconDiv.style.background = data.isError ? 
-				'linear-gradient(135deg, #e74c3c 0%, #c0392b 100%)' : 
-				'linear-gradient(135deg, #1cc08c 0%, #16a974 100%)';
-			iconDiv.textContent = data.isError ? '❌' : '✅';
-			
 			const labelDiv = document.createElement('div');
 			labelDiv.className = 'message-label';
 			labelDiv.textContent = data.isError ? 'Error' : 'Result';
 			
-			headerDiv.appendChild(iconDiv);
 			headerDiv.appendChild(labelDiv);
 			messageDiv.appendChild(headerDiv);
 			
@@ -382,19 +348,6 @@ const getScript = (isTelemetryEnabled: boolean) => `<script>
 			
 			messageDiv.appendChild(contentDiv);
 			
-			// Check if this is a permission-related error and add yolo mode button
-			if (data.isError && isPermissionError(content)) {
-				const yoloSuggestion = document.createElement('div');
-				yoloSuggestion.className = 'yolo-suggestion';
-				yoloSuggestion.innerHTML = \`
-					<div class="yolo-suggestion-text">
-						<span>💡 This looks like a permission issue. You can enable Yolo Mode to skip all permission checks.</span>
-					</div>
-					<button class="yolo-suggestion-btn" onclick="enableYoloMode()">Enable Yolo Mode</button>
-				\`;
-				messageDiv.appendChild(yoloSuggestion);
-			}
-			
 			messagesDiv.appendChild(messageDiv);
 			moveProcessingIndicatorToLast();
 			scrollToBottomIfNeeded(messagesDiv, shouldScroll);
@@ -421,22 +374,81 @@ const getScript = (isTelemetryEnabled: boolean) => `<script>
 			// Special handling for Read tool with file_path
 			if (input.file_path && Object.keys(input).length === 1) {
 				const formattedPath = formatFilePath(input.file_path);
-				return '<div class="diff-file-path" onclick="openFileInEditor(\\\'' + escapeHtml(input.file_path) + '\\\')">' + formattedPath + '</div>';
+				return '<div class="diff-file-path" data-file-path="' + escapeHtml(input.file_path) + '" onclick="openFileInEditor(this.dataset.filePath)">' + formattedPath + '</div>';
 			}
 
 			let result = '';
 			let isFirst = true;
-			for (const [key, value] of Object.entries(input)) {
+
+			// Check if this is a Read tool with offset and limit parameters
+			const entries = Object.entries(input);
+			const hasOffset = entries.some(([key]) => key === 'offset');
+			const hasLimit = entries.some(([key]) => key === 'limit');
+			const hasOffsetLimit = hasOffset && hasLimit;
+			const hasFilePath = entries.some(([key]) => key === 'file_path');
+
+			// Collect all parameters other than file_path, offset, and limit
+			const otherEntries = entries.filter(([key]) => key !== 'file_path' && key !== 'offset' && key !== 'limit');
+
+			// Process file_path first if it exists (it gets special formatting)
+			const filePathEntry = entries.find(([key]) => key === 'file_path');
+			if (filePathEntry) {
+				const [key, value] = filePathEntry;
 				const valueStr = typeof value === 'string' ? value : JSON.stringify(value, null, 2);
-				
+				const formattedPath = formatFilePath(valueStr);
+				result += '<div class="diff-file-path" data-file-path="' + escapeHtml(valueStr) + '" onclick="openFileInEditor(this.dataset.filePath)">' + formattedPath + '</div>';
+				isFirst = false;
+			}
+
+			// Process offset and limit together if both exist
+			if (hasOffsetLimit) {
+				if (!isFirst) result += '\\n'; // Add newline if there was a file_path
+				isFirst = false;
+
+				const offsetEntry = entries.find(([key]) => key === 'offset');
+				const limitEntry = entries.find(([key]) => key === 'limit');
+
+				if (offsetEntry) {
+					const [key, value] = offsetEntry;
+					const valueStr = typeof value === 'string' ? value : JSON.stringify(value, null, 2);
+					result += '<strong>' + key + ':</strong> ' + valueStr;
+				}
+				if (limitEntry) {
+					const [key, value] = limitEntry;
+					const valueStr = typeof value === 'string' ? value : JSON.stringify(value, null, 2);
+					result += ', <strong>' + key + ':</strong> ' + valueStr;
+				}
+			} else if (hasOffset) {
+				// Process offset alone
 				if (!isFirst) result += '\\n';
 				isFirst = false;
-				
-				// Special formatting for file_path in Read tool context
-				if (key === 'file_path') {
-					const formattedPath = formatFilePath(valueStr);
-					result += '<div class="diff-file-path" onclick="openFileInEditor(\\\'' + escapeHtml(valueStr) + '\\\')">' + formattedPath + '</div>';
-				} else if (valueStr.length > 100) {
+				const offsetEntry = entries.find(([key]) => key === 'offset');
+				if (offsetEntry) {
+					const [key, value] = offsetEntry;
+					const valueStr = typeof value === 'string' ? value : JSON.stringify(value, null, 2);
+					result += '<strong>' + key + ':</strong> ' + valueStr;
+				}
+			} else if (hasLimit) {
+				// Process limit alone
+				if (!isFirst) result += '\\n';
+				isFirst = false;
+				const limitEntry = entries.find(([key]) => key === 'limit');
+				if (limitEntry) {
+					const [key, value] = limitEntry;
+					const valueStr = typeof value === 'string' ? value : JSON.stringify(value, null, 2);
+					result += '<strong>' + key + ':</strong> ' + valueStr;
+				}
+			}
+
+			// Process any other parameters
+			for (let i = 0; i < otherEntries.length; i++) {
+				const [key, value] = otherEntries[i];
+				const valueStr = typeof value === 'string' ? value : JSON.stringify(value, null, 2);
+
+				if (!isFirst) result += '\\n';
+				isFirst = false;
+
+				if (valueStr.length > 100) {
 					const truncated = valueStr.substring(0, 97) + '...';
 					const escapedValue = valueStr.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 					result += '<span class="expandable-item"><strong>' + key + ':</strong> ' + truncated + ' <span class="expand-btn" data-key="' + key + '" data-value="' + escapedValue + '" onclick="toggleExpand(this)">expand</span></span>';
@@ -523,7 +535,7 @@ const getScript = (isTelemetryEnabled: boolean) => `<script>
 
 			// Header with file path
 			html += '<div class="diff-file-header">';
-			html += '<div class="diff-file-path" onclick="openFileInEditor(\\\'' + escapeHtml(filePath) + '\\\')">' + formattedPath + '</div>';
+			html += '<div class="diff-file-path" data-file-path="' + escapeHtml(filePath) + '" onclick="openFileInEditor(this.dataset.filePath)">' + formattedPath + '</div>';
 			html += '</div>\\n';
 
 			// Calculate line range
@@ -660,7 +672,7 @@ const getScript = (isTelemetryEnabled: boolean) => `<script>
 			// Show full diffs for each edit
 			const formattedPath = formatFilePath(input.file_path);
 			let html = '<div class="diff-file-header">';
-			html += '<div class="diff-file-path" onclick="openFileInEditor(\\\'' + escapeHtml(input.file_path) + '\\\')">' + formattedPath + '</div>';
+			html += '<div class="diff-file-path" data-file-path="' + escapeHtml(input.file_path) + '" onclick="openFileInEditor(this.dataset.filePath)">' + formattedPath + '</div>';
 			html += '</div>\\n';
 
 			input.edits.forEach((edit, index) => {
@@ -745,9 +757,11 @@ const getScript = (isTelemetryEnabled: boolean) => `<script>
 		}
 
 		function openFileInEditor(filePath) {
+			// Normalize file path to use forward slashes to prevent JavaScript escape sequence issues
+			const normalizedPath = filePath.replace(/\\\\/g, '/');
 			vscode.postMessage({
 				type: 'openFile',
-				filePath: filePath
+				filePath: normalizedPath
 			});
 		}
 
@@ -907,12 +921,10 @@ const getScript = (isTelemetryEnabled: boolean) => `<script>
 
 		function updateStatus(text, state = 'ready') {
 			statusTextDiv.textContent = text;
-			statusDiv.className = \`status \${state}\`;
 		}
 
 		function updateStatusHtml(html, state = 'ready') {
 			statusTextDiv.innerHTML = html;
-			statusDiv.className = \`status \${state}\`;
 		}
 
 		function viewUsage(usageType) {
@@ -938,26 +950,21 @@ const getScript = (isTelemetryEnabled: boolean) => `<script>
 				// When ready, show full info
 				// Show plan type for subscription users, cost for API users
 				let usageStr;
-				const usageIcon = \`<svg class="usage-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-					<rect x="1" y="8" width="3" height="6" rx="0.5" fill="currentColor" opacity="0.5"/>
-					<rect x="5.5" y="5" width="3" height="9" rx="0.5" fill="currentColor" opacity="0.7"/>
-					<rect x="10" y="2" width="3" height="12" rx="0.5" fill="currentColor"/>
-				</svg>\`;
 				if (subscriptionType) {
 					// Extract just the plan type (e.g., "Claude Max" -> "Max", "pro" -> "Pro")
 					let planName = subscriptionType.replace(/^claude\\s*/i, '').trim();
 					planName = planName.charAt(0).toUpperCase() + planName.slice(1);
-					usageStr = \`<a href="#" onclick="event.preventDefault(); viewUsage('plan');" class="usage-badge" title="View live usage">\${planName} Plan\${usageIcon}</a>\`;
+					usageStr = \`<a href="#" onclick="event.preventDefault(); viewUsage('plan');" class="usage-badge" title="View live usage">\${planName} Plan</a>\`;
 				} else {
 					const costStr = totalCost > 0 ? \`$\${totalCost.toFixed(4)}\` : '$0.00';
-					usageStr = \`<a href="#" onclick="event.preventDefault(); viewUsage('api');" class="usage-badge" title="View usage">\${costStr}\${usageIcon}</a>\`;
+					usageStr = \`<a href="#" onclick="event.preventDefault(); viewUsage('api');" class="usage-badge" title="View usage">\${costStr}</a>\`;
 				}
 				const totalTokens = totalTokensInput + totalTokensOutput;
 				const tokensStr = totalTokens > 0 ?
 					\`\${totalTokens.toLocaleString()} tokens\` : '0 tokens';
 				const requestStr = requestCount > 0 ? \`\${requestCount} requests\` : '';
 
-				const statusText = \`Ready • \${tokensStr}\${requestStr ? \` • \${requestStr}\` : ''} • \${usageStr}\`;
+				const statusText = \`\${tokensStr}\${requestStr ? \` • \${requestStr}\` : ''} • \${usageStr}\`;
 				updateStatusHtml(statusText, 'ready');
 			}
 		}
@@ -1056,14 +1063,19 @@ const getScript = (isTelemetryEnabled: boolean) => `<script>
 					return;
 				}
 				sendMessage();
+			} else if (e.key === 'Escape') {
+				e.preventDefault();
+				const sendBtn = document.getElementById('sendBtn');
+				if (sendBtn.innerHTML.includes('Stop')) {
+					stopRequest();
+				} else if (filePickerModal.style.display === 'flex') {
+					hideFilePicker();
+				}
 			} else if (e.key === '@' && !e.ctrlKey && !e.metaKey) {
 				// Don't prevent default, let @ be typed first
 				setTimeout(() => {
 					showFilePicker();
 				}, 0);
-			} else if (e.key === 'Escape' && filePickerModal.style.display === 'flex') {
-				e.preventDefault();
-				hideFilePicker();
 			} else if (e.key === 'v' && (e.ctrlKey || e.metaKey)) {
 				// Handle Ctrl+V/Cmd+V explicitly in case paste event doesn't fire
 				// Don't prevent default - let browser handle it first
@@ -1169,6 +1181,7 @@ const getScript = (isTelemetryEnabled: boolean) => `<script>
 			}
 		});
 
+
 		// Handle context menu paste
 		messageInput.addEventListener('contextmenu', (e) => {
 			// Don't prevent default - allow context menu to show
@@ -1215,18 +1228,6 @@ const getScript = (isTelemetryEnabled: boolean) => `<script>
 			loadMCPServers();
 		}
 		
-		function updateYoloWarning() {
-			const yoloModeCheckbox = document.getElementById('yolo-mode');
-			const warning = document.getElementById('yoloWarning');
-			
-			if (!yoloModeCheckbox || !warning) {
-				return; // Elements not ready yet
-			}
-			
-			const yoloMode = yoloModeCheckbox.checked;
-			warning.style.display = yoloMode ? 'block' : 'none';
-		}
-		
 		function isPermissionError(content) {
 			const permissionErrorPatterns = [
 				'Error: MCP config file not found',
@@ -1256,12 +1257,6 @@ const getScript = (isTelemetryEnabled: boolean) => `<script>
 				
 				// Trigger the settings update
 				updateSettings();
-				
-				// Show confirmation message
-				addMessage('✅ Yolo Mode enabled! All permission checks will be bypassed for future commands.', 'system');
-				
-				// Update the warning banner
-				updateYoloWarning();
 			}
 		}
 
@@ -1971,11 +1966,16 @@ const getScript = (isTelemetryEnabled: boolean) => `<script>
 
 		// Stop button functions
 		function showStopButton() {
-			document.getElementById('stopBtn').style.display = 'flex';
+			const sendBtn = document.getElementById('sendBtn');
+			sendBtn.disabled = false;
+			sendBtn.innerHTML = \`<div><span>Stop </span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="11" height="11"><path fill="currentColor" d="M6 6h12v12H6z"></path></svg></div>\`;
+			sendBtn.onclick = stopRequest;
 		}
 
 		function hideStopButton() {
-			document.getElementById('stopBtn').style.display = 'none';
+			const sendBtn = document.getElementById('sendBtn');
+			sendBtn.innerHTML = \`<div><span>Send </span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="11" height="11"><path fill="currentColor" d="M20 4v9a4 4 0 0 1-4 4H6.914l2.5 2.5L8 20.914L3.086 16L8 11.086L9.414 12.5l-2.5 2.5H16a2 2 0 0 0 2-2V4z"></path></svg></div>\`;
+			sendBtn.onclick = sendMessage;
 		}
 
 		function stopRequest() {
@@ -1989,8 +1989,8 @@ const getScript = (isTelemetryEnabled: boolean) => `<script>
 
 		// Disable/enable buttons during processing
 		function disableButtons() {
-			const sendBtn = document.getElementById('sendBtn');
-			if (sendBtn) sendBtn.disabled = true;
+			// Don't disable sendBtn as it becomes the Stop button and needs to be clickable
+			// Other buttons can be disabled if needed
 		}
 
 		function enableButtons() {
@@ -2151,6 +2151,13 @@ const getScript = (isTelemetryEnabled: boolean) => `<script>
 					updateStatusWithTotals();
 					break;
 					
+				case 'system':
+					if (message.data.trim()) {
+						addMessage(message.data, 'system');
+					}
+					updateStatusWithTotals();
+					break;
+					
 				case 'toolUse':
 					if (typeof message.data === 'object') {
 						addToolUseMessage(message.data);
@@ -2196,17 +2203,18 @@ const getScript = (isTelemetryEnabled: boolean) => `<script>
 						// Add a space before the path if there's text before and it doesn't end with whitespace
 						const separator = (textBefore && !textBefore.endsWith(' ') && !textBefore.endsWith('\\n')) ? ' ' : '';
 						
-						messageInput.value = textBefore + separator + message.data.filePath + textAfter;
+						const normalizedFilePath = message.data.filePath.replace(/\\\\/g, '/');
+						messageInput.value = textBefore + separator + normalizedFilePath + textAfter;
 						
 						// Move cursor to end of inserted path
-						const newCursorPosition = cursorPosition + separator.length + message.data.filePath.length;
+						const newCursorPosition = cursorPosition + separator.length + normalizedFilePath.length;
 						messageInput.setSelectionRange(newCursorPosition, newCursorPosition);
 						
 						// Focus back on textarea and adjust height
 						messageInput.focus();
 						adjustTextareaHeight();
 						
-						console.log('Inserted image path:', message.data.filePath);
+						console.log('Inserted image path:', normalizedFilePath);
 						console.log('Full textarea value:', messageInput.value);
 					}
 					break;
@@ -2222,7 +2230,7 @@ const getScript = (isTelemetryEnabled: boolean) => `<script>
 					// Show detailed token breakdown for current message
 					const currentTotal = (message.data.currentInputTokens || 0) + (message.data.currentOutputTokens || 0);
 					if (currentTotal > 0) {
-						let tokenBreakdown = \`📊 Tokens: \${currentTotal.toLocaleString()}\`;
+						let tokenBreakdown = \`Tokens: \${currentTotal.toLocaleString()}\`;
 						
 						if (message.data.cacheCreationTokens || message.data.cacheReadTokens) {
 							const cacheInfo = [];
@@ -2272,7 +2280,6 @@ const getScript = (isTelemetryEnabled: boolean) => `<script>
 					// Clear all messages from UI
 					messagesDiv.innerHTML = '';
 					hideSessionInfo();
-					addMessage('🆕 Started new session', 'system');
 					// Reset totals
 					totalCost = 0;
 					totalTokensInput = 0;
@@ -2340,14 +2347,16 @@ const getScript = (isTelemetryEnabled: boolean) => `<script>
 					break;
 					
 				case 'imagePath':
-					// Add the image path to the textarea
+					// Normalize image path to use forward slashes and add to textarea
+					const normalizedImagePath = message.path.replace(/\\\\/g, '/');
 					const currentText = messageInput.value;
-					const pathIndicator = \`@\${message.path} \`;
+					const pathIndicator = '@' + normalizedImagePath + ' ';
 					messageInput.value = currentText + pathIndicator;
 					messageInput.focus();
 					adjustTextareaHeight();
 					break;
-					
+
+
 				case 'conversationList':
 					displayConversationList(message.data);
 					break;
@@ -2697,10 +2706,14 @@ const getScript = (isTelemetryEnabled: boolean) => `<script>
 				// sessionInfo.style.display = 'none';
 				sessionStatus.style.display = 'none';
 
-				// Always show new session
-				newSessionBtn.style.display = 'block';
+				// Always show new session, but only if not already visible
+				if (newSessionBtn.style.display !== 'block') {
+					newSessionBtn.style.display = 'block';
+				}
 				// Keep history button visible - don't hide it
-				if (historyBtn) historyBtn.style.display = 'block';
+				if (historyBtn && historyBtn.style.display !== 'block') {
+					historyBtn.style.display = 'block';
+				}
 			}
 		}
 
@@ -2935,18 +2948,19 @@ const getScript = (isTelemetryEnabled: boolean) => `<script>
 			const cursorPos = messageInput.selectionStart;
 			const textBefore = messageInput.value.substring(0, cursorPos);
 			const textAfter = messageInput.value.substring(cursorPos);
-			
-			// Replace the @ symbol with the file path
+
+			// Normalize file path to use forward slashes and replace the @ symbol with the file path
+			const normalizedPath = file.path.replace(/\\\\/g, '/');
 			const beforeAt = textBefore.substring(0, textBefore.lastIndexOf('@'));
-			const newText = beforeAt + '@' + file.path + ' ' + textAfter;
-			
+			const newText = beforeAt + '@' + normalizedPath + ' ' + textAfter;
+
 			messageInput.value = newText;
 			messageInput.focus();
-			
+
 			// Set cursor position after the inserted path
-			const newCursorPos = beforeAt.length + file.path.length + 2;
+			const newCursorPos = beforeAt.length + normalizedPath.length + 2;
 			messageInput.setSelectionRange(newCursorPos, newCursorPos);
-			
+
 			hideFilePicker();
 			adjustTextareaHeight();
 		}
@@ -3097,7 +3111,7 @@ const getScript = (isTelemetryEnabled: boolean) => `<script>
 					'wsl.enabled': wslEnabled,
 					'wsl.distro': wslDistro || 'Ubuntu',
 					'wsl.nodePath': wslNodePath || '/usr/bin/node',
-					'wsl.claudePath': wslClaudePath || '/usr/local/bin/claude',
+					'wsl.claudePath': wslClaudePath || 'ccr code',
 					'permissions.yoloMode': yoloMode
 				}
 			});
@@ -3305,11 +3319,8 @@ const getScript = (isTelemetryEnabled: boolean) => `<script>
 				document.getElementById('wsl-enabled').checked = message.data['wsl.enabled'] || false;
 				document.getElementById('wsl-distro').value = message.data['wsl.distro'] || 'Ubuntu';
 				document.getElementById('wsl-node-path').value = message.data['wsl.nodePath'] || '/usr/bin/node';
-				document.getElementById('wsl-claude-path').value = message.data['wsl.claudePath'] || '/usr/local/bin/claude';
+				document.getElementById('wsl-claude-path').value = message.data['wsl.claudePath'] || 'ccr code';
 				document.getElementById('yolo-mode').checked = message.data['permissions.yoloMode'] || false;
-				
-				// Update yolo warning visibility
-				updateYoloWarning();
 				
 				// Show/hide WSL options
 				document.getElementById('wslOptions').style.display = message.data['wsl.enabled'] ? 'block' : 'none';

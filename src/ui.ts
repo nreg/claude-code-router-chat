@@ -1,5 +1,5 @@
 import getScript from './script';
-import styles from './ui-styles'
+import styles from './ui-styles';
 
 
 const getHtml = (isTelemetryEnabled: boolean) => `<!DOCTYPE html>
@@ -7,24 +7,30 @@ const getHtml = (isTelemetryEnabled: boolean) => `<!DOCTYPE html>
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Claude Code Chat</title>
+	<title>Claude Code Router Chat</title>
 	${styles}
 </head>
 <body>
 	<div class="header">
 		<div style="display: flex; align-items: center;">
-			<h2>Claude Code Chat</h2>
+			<h2>Claude Code Router Chat</h2>
 			<!-- <div id="sessionInfo" class="session-badge" style="display: none;">
 				<span class="session-icon">💬</span>
 				<span id="sessionId">-</span>
 				<span class="session-label">session</span>
 			</div> -->
 		</div>
-		<div style="display: flex; gap: 8px; align-items: center;">
+		<div style="display: flex; gap: 8px; align-items: center; box-sizing: border-box;">
 			<div id="sessionStatus" class="session-status" style="display: none;">No session</div>
 			<button class="btn outlined" id="settingsBtn" onclick="toggleSettings()" title="Settings">⚙️</button>
-			<button class="btn outlined" id="historyBtn" onclick="toggleConversationHistory()">📚 History</button>
-			<button class="btn primary" id="newSessionBtn" onclick="newSession()">New Chat</button>
+			<button class="btn outlined" id="historyBtn" onclick="toggleConversationHistory()" title="History">📚️️	</button>
+			<button class="btn outlined" id="newSessionBtn" onclick="newSession()" title="New Chat">
+				<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+					<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+					<line x1="12" y1="8" x2="12" y2="16"></line>
+					<line x1="8" y1="12" x2="16" y2="12"></line>
+				</svg>
+			</button>
 		</div>
 	</div>
 	
@@ -65,6 +71,10 @@ const getHtml = (isTelemetryEnabled: boolean) => `<!DOCTYPE html>
 				<div class="mode-toggle">
 					<span id="thinkingModeLabel" onclick="toggleThinkingMode()">Thinking Mode</span>
 					<div class="mode-switch" id="thinkingModeSwitch" onclick="toggleThinkingMode()"></div>
+				</div>
+
+				<div class="mode-toggle-right" id="statusText">
+				
 				</div>
 			</div>
 			<div class="textarea-container">
@@ -123,21 +133,6 @@ const getHtml = (isTelemetryEnabled: boolean) => `<!DOCTYPE html>
 			</div>
 		</div>
 	</div>
-	
-	<div class="status ready" id="status">
-		<div class="status-indicator"></div>
-		<div class="status-text" id="statusText">Initializing...</div>
-		<button class="btn stop" id="stopBtn" onclick="stopRequest()" style="display: none;">
-			<svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
-				<path d="M6 6h12v12H6z"/>
-			</svg>
-			Stop
-		</button>
-	</div>
-
-			<div id="yoloWarning" class="yolo-warning" style="display: none;">
-			⚠️ Yolo Mode Active: Claude Code will auto-approve all tool requests.
-		</div>
 
 	<!-- File picker modal -->
 	<div id="filePickerModal" class="file-picker-modal" style="display: none;">
@@ -259,7 +254,7 @@ const getHtml = (isTelemetryEnabled: boolean) => `<!DOCTYPE html>
 	<div id="settingsModal" class="tools-modal" style="display: none;">
 		<div class="tools-modal-content">
 			<div class="tools-modal-header">
-				<span>Claude Code Chat Settings</span>
+				<span>Claude Code Router Chat Settings</span>
 				<button class="tools-close-btn" onclick="hideSettingsModal()">✕</button>
 			</div>
 			<div class="tools-list">
@@ -292,7 +287,7 @@ const getHtml = (isTelemetryEnabled: boolean) => `<!DOCTYPE html>
 						
 						<div style="margin-bottom: 12px;">
 							<label style="display: block; margin-bottom: 4px; font-size: 12px; color: var(--vscode-descriptionForeground);">Claude Path in WSL</label>
-							<input type="text" id="wsl-claude-path" class="file-search-input" style="width: 100%;" placeholder="/usr/local/bin/claude" onchange="updateSettings()">
+							<input type="text" id="wsl-claude-path" class="file-search-input" style="width: 100%;" placeholder="ccr code" onchange="updateSettings()">
 							<p style="font-size: 11px; color: var(--vscode-descriptionForeground); margin: 4px 0 0 0;">
 								Find your claude installation path in WSL by running: <code style="background: var(--vscode-textCodeBlock-background); padding: 2px 4px; border-radius: 3px;">which claude</code>
 							</p>
@@ -452,7 +447,7 @@ const getHtml = (isTelemetryEnabled: boolean) => `<!DOCTYPE html>
 
 	<!-- Thinking intensity modal -->
 	<div id="thinkingIntensityModal" class="tools-modal" style="display: none;">
-		<div class="tools-modal-content" style="width: 450px;">
+		<div class="tools-modal-content" style="width: 500px;">
 			<div class="tools-modal-header">
 				<span>Thinking Mode Intensity</span>
 				<button class="tools-close-btn" onclick="hideThinkingIntensityModal()">✕</button>
@@ -462,12 +457,12 @@ const getHtml = (isTelemetryEnabled: boolean) => `<!DOCTYPE html>
 			</div>
 			<div class="tools-list">
 				<div class="thinking-slider-container">
-					<input type="range" min="0" max="3" value="0" step="1" class="thinking-slider" id="thinkingIntensitySlider" oninput="updateThinkingIntensityDisplay(this.value)">
+					<input type="range" min="0" max="3" value="0" step="1" class="thinking-slider" id="thinkingIntensitySlider" oninput="updateThinkingIntensityDisplay(this.value)"/>
 					<div class="slider-labels">
 						<div class="slider-label active" id="thinking-label-0" onclick="setThinkingIntensityValue(0)">Think</div>
 						<div class="slider-label" id="thinking-label-1" onclick="setThinkingIntensityValue(1)">Think Hard</div>
 						<div class="slider-label" id="thinking-label-2" onclick="setThinkingIntensityValue(2)">Think Harder</div>
-						<div class="slider-label" id="thinking-label-3" onclick="setThinkingIntensityValue(3)">Ultrathink</div>
+						<div class="slider-label" id="thinking-label-3" onclick="setThinkingIntensityValue(3)">Ultra think</div>
 					</div>
 				</div>
 				<div class="thinking-modal-actions">

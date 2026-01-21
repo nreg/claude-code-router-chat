@@ -30,7 +30,7 @@ if [ -f "icon-bubble.png" ]; then
 fi
 
 # Apply Open VSIX changes to package.json
-sed -i.bak 's/"displayName": "Chat for Claude Code"/"displayName": "Claude Code Chat"/' package.json
+sed -i.bak 's/"displayName": "Chat for Claude Code"/"displayName": "Claude Code Router Chat"/' package.json
 sed -i.bak 's/"icon": "icon-bubble.png"/"icon": "icon.png"/g' package.json
 rm -f package.json.bak
 

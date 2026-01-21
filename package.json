@@ -1,19 +1,20 @@
 {
-  "name": "claude-code-chat",
-  "displayName": "Chat for Claude Code",
-  "description": "Beautiful Claude Code Chat Interface for VS Code",
+  "name": "claude-code-router-chat",
+  "displayName": "Claude Code Router Chat",
+  "description": "Beautiful Claude Code Router Chat Interface for VS Code",
   "version": "1.1.0",
-  "publisher": "AndrePimenta",
-  "author": "Andre Pimenta",
+  "publisher": "nreg",
+  "author": "nreg",
   "repository": {
     "type": "git",
-    "url": "https://github.com/andrepimenta/claude-code-chat"
+    "url": "https://github.com/nreg/claude-code-router-chat"
   },
   "license": "SEE LICENSE IN LICENSE",
   "engines": {
     "vscode": "^1.94.0"
   },
   "categories": [
+    "claude",
     "Other",
     "AI",
     "Chat",
@@ -27,6 +28,7 @@
   ],
   "keywords": [
     "claude code",
+    "claude code router",
     "code explanation",
     "code generation",
     "code summary",
@@ -54,8 +56,8 @@
     "commands": [
       {
         "command": "claude-code-chat.openChat",
-        "title": "Open Claude Code Chat",
-        "category": "Claude Code Chat",
+        "title": "Open Claude Code Router Chat",
+        "category": "Claude Code Router Chat",
         "icon": "icon-bubble.png"
       }
     ],
@@ -131,10 +133,10 @@
         {
           "id": "claude-code-chat.chat",
           "type": "webview",
-          "name": "Claude Code Chat",
+          "name": "Claude Code Router Chat",
           "when": "true",
           "icon": "icon-bubble.png",
-          "contextualTitle": "Claude Code Chat"
+          "contextualTitle": "Claude Code Router Chat"
         }
       ]
     },
@@ -142,13 +144,13 @@
       "activitybar": [
         {
           "id": "claude-code-chat",
-          "title": "Claude Code Chat",
+          "title": "Claude Code Router Chat",
           "icon": "icon-bubble.png"
         }
       ]
     },
     "configuration": {
-      "title": "Claude Code Chat",
+      "title": "Claude Code Router Chat",
       "properties": {
         "claudeCodeChat.wsl.enabled": {
           "type": "boolean",
@@ -167,7 +169,7 @@
         },
         "claudeCodeChat.wsl.claudePath": {
           "type": "string",
-          "default": "/usr/local/bin/claude",
+          "default": "ccr code",
           "description": "Path to Claude executable in the WSL distribution"
         },
         "claudeCodeChat.thinking.intensity": {

@@ -12,17 +12,18 @@ const diffContentStore = new Map<string, string>();
 // Custom TextDocumentContentProvider for read-only diff views
 class DiffContentProvider implements vscode.TextDocumentContentProvider {
 	provideTextDocumentContent(uri: vscode.Uri): string {
-		const content = diffContentStore.get(uri.path);
+		// Cross-platform path handling should always use Uri.fsPath rather than Uri.path
+		const content = diffContentStore.get(uri.fsPath);
 		return content || '';
 	}
 }
 
 export function activate(context: vscode.ExtensionContext) {
-	console.log('Claude Code Chat extension is being activated!');
+	console.log('Claude Code Router Chat extension is being activated!');
 	const provider = new ClaudeChatProvider(context.extensionUri, context);
 
 	const disposable = vscode.commands.registerCommand('claude-code-chat.openChat', (column?: vscode.ViewColumn) => {
-		console.log('Claude Code Chat command executed!');
+		console.log('Claude Code Router Chat command executed!');
 		provider.show(column);
 	});
 
@@ -49,12 +50,12 @@ export function activate(context: vscode.ExtensionContext) {
 	// Create status bar item
 	const statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
 	statusBarItem.text = "Claude";
-	statusBarItem.tooltip = "Open Claude Code Chat (Ctrl+Shift+C)";
+	statusBarItem.tooltip = "Open Claude Code Router Chat (Ctrl+Shift+C)";
 	statusBarItem.command = 'claude-code-chat.openChat';
 	statusBarItem.show();
 
 	context.subscriptions.push(disposable, loadConversationDisposable, configChangeDisposable, statusBarItem);
-	console.log('Claude Code Chat extension activation completed successfully!');
+	console.log('Claude Code Router Chat extension activation completed successfully!');
 }
 
 export function deactivate() { }
@@ -150,6 +151,7 @@ class ClaudeChatProvider {
 	private _abortController: AbortController | undefined;
 	private _isWslProcess: boolean = false;
 	private _wslDistro: string = 'Ubuntu';
+	private _isInterrupted: boolean = false;
 	private _selectedModel: string = 'default'; // Default model
 	private _isProcessing: boolean | undefined;
 	private _draftMessage: string = '';
@@ -192,7 +194,7 @@ class ClaudeChatProvider {
 
 		this._panel = vscode.window.createWebviewPanel(
 			'claudeChat',
-			'Claude Code Chat',
+			'Claude Code Router Chat',
 			actualColumn,
 			{
 				enableScripts: true,
@@ -231,10 +233,21 @@ class ClaudeChatProvider {
 	}
 
 	private _postMessage(message: any) {
+		// Check if webview is ready before sending the message
 		if (this._panel && this._panel.webview) {
-			this._panel.webview.postMessage(message);
+			// Check if the webview is actually ready to receive messages
+			const sendResult = this._panel.webview.postMessage(message);
+			if (!sendResult) {
+				console.warn('Failed to send message to webview panel:', message.type);
+			}
 		} else if (this._webview) {
-			this._webview.postMessage(message);
+			// Check if the webview view is actually ready to receive messages
+			const sendResult = this._webview.postMessage(message);
+			if (!sendResult) {
+				console.warn('Failed to send message to webview:', message.type);
+			}
+		} else {
+			console.warn('Webview not available for message:', message.type);
 		}
 	}
 
@@ -309,8 +322,8 @@ class ClaudeChatProvider {
 				this.loadConversation(message.filename);
 				return;
 			case 'stopRequest':
-				this._stopClaudeProcess();
-				return;
+			this._stopClaudeProcess();
+			return;
 			case 'getSettings':
 				this._sendCurrentSettings();
 				return;
@@ -467,7 +480,7 @@ class ClaudeChatProvider {
 		let actualMessage = message;
 		if (thinkingMode) {
 			let thinkingPrompt = '';
-			const thinkingMesssage = ' THROUGH THIS STEP BY STEP: \n'
+			const thinkingMesssage = ' THROUGH THIS STEP BY STEP: \n';
 			switch (thinkingIntensity) {
 				case 'think':
 					thinkingPrompt = 'THINK';
@@ -567,12 +580,15 @@ class ClaudeChatProvider {
 		const wslEnabled = config.get<boolean>('wsl.enabled', false);
 		const wslDistro = config.get<string>('wsl.distro', 'Ubuntu');
 		const nodePath = config.get<string>('wsl.nodePath', '/usr/bin/node');
-		const claudePath = config.get<string>('wsl.claudePath', '/usr/local/bin/claude');
+		const claudePath = config.get<string>('wsl.claudePath', 'ccr code');
 
 		let claudeProcess: cp.ChildProcess;
 
 		// Create new AbortController for this request
 		this._abortController = new AbortController();
+
+		// Reset interrupted flag for new process
+		this._isInterrupted = false;
 
 		if (wslEnabled) {
 			// Use WSL with bash -ic for proper environment loading
@@ -600,7 +616,8 @@ class ClaudeChatProvider {
 
 			// Use native claude command
 			console.log('Using native Claude command');
-			claudeProcess = cp.spawn('claude', args, {
+			// claudeProcess = cp.spawn('claude', args, {
+			claudeProcess = cp.spawn('ccr code', args, {
 				signal: this._abortController.signal,
 				shell: process.platform === 'win32',
 				detached: process.platform !== 'win32',
@@ -650,6 +667,10 @@ class ClaudeChatProvider {
 
 		if (claudeProcess.stdout) {
 			claudeProcess.stdout.on('data', (data) => {
+				if (this._isInterrupted) {
+					return;
+				}
+
 				rawOutput += data.toString();
 
 				// Process JSON stream line by line
@@ -766,8 +787,8 @@ class ClaudeChatProvider {
 				});
 			} else {
 				this._sendAndSaveMessage({
-					type: 'error',
-					data: `Error running Claude: ${error.message}`
+					type: 'system',
+					data: error.message
 				});
 			}
 		});
@@ -951,7 +972,7 @@ class ClaudeChatProvider {
 							const isError = content.is_error || false;
 
 							// Find the last tool use to get the tool name, input, and computed startLine
-							const lastToolUse = this._currentConversation[this._currentConversation.length - 1]
+							const lastToolUse = this._currentConversation[this._currentConversation.length - 1];
 
 							const toolName = lastToolUse?.data?.toolName;
 							const rawInput = lastToolUse?.data?.rawInput;
@@ -1149,7 +1170,7 @@ class ClaudeChatProvider {
 		const wslEnabled = config.get<boolean>('wsl.enabled', false);
 		const wslDistro = config.get<string>('wsl.distro', 'Ubuntu');
 		const nodePath = config.get<string>('wsl.nodePath', '/usr/bin/node');
-		const claudePath = config.get<string>('wsl.claudePath', '/usr/local/bin/claude');
+		const claudePath = config.get<string>('wsl.claudePath', 'ccr code');
 
 		// Open terminal and run claude login
 		const terminal = vscode.window.createTerminal({
@@ -1159,7 +1180,7 @@ class ClaudeChatProvider {
 		if (wslEnabled) {
 			terminal.sendText(`wsl -d ${wslDistro} ${nodePath} --no-warnings --enable-source-maps ${claudePath}`);
 		} else {
-			terminal.sendText('claude');
+			terminal.sendText('ccr code');
 		}
 		terminal.show();
 
@@ -1199,7 +1220,7 @@ class ClaudeChatProvider {
 
 				// Initialize git repo with workspace as work-tree
 				await exec(`git --git-dir="${this._backupRepoPath}" --work-tree="${workspacePath}" init`);
-				await exec(`git --git-dir="${this._backupRepoPath}" config user.name "Claude Code Chat"`);
+				await exec(`git --git-dir="${this._backupRepoPath}" config user.name "Claude Code Router Chat"`);
 				await exec(`git --git-dir="${this._backupRepoPath}" config user.email "claude@anthropic.com"`);
 
 				console.log(`Initialized backup repository at: ${this._backupRepoPath}`);
@@ -1396,7 +1417,9 @@ class ClaudeChatProvider {
 	private async _isToolPreApproved(toolName: string, input: Record<string, unknown>): Promise<boolean> {
 		try {
 			const storagePath = this._context.storageUri?.fsPath;
-			if (!storagePath) return false;
+			if (!storagePath) {
+				return false;
+			}
 
 			const permissionsUri = vscode.Uri.file(path.join(storagePath, 'permissions', 'permissions.json'));
 			let permissions: any = { alwaysAllow: {} };
@@ -1436,7 +1459,9 @@ class ClaudeChatProvider {
 	 * Check if a command matches a permission pattern (supports * wildcard)
 	 */
 	private _matchesPattern(command: string, pattern: string): boolean {
-		if (pattern === command) return true;
+		if (pattern === command) {
+			return true;
+		}
 
 		// Handle wildcard patterns like "npm install *"
 		if (pattern.endsWith(' *')) {
@@ -1666,7 +1691,9 @@ class ClaudeChatProvider {
 	private async _saveLocalPermission(toolName: string, input: Record<string, unknown>): Promise<void> {
 		try {
 			const storagePath = this._context.storageUri?.fsPath;
-			if (!storagePath) return;
+			if (!storagePath) {
+				return;
+			}
 
 			// Ensure permissions directory exists
 			const permissionsDir = path.join(storagePath, 'permissions');
@@ -1714,7 +1741,9 @@ class ClaudeChatProvider {
 
 	private getCommandPattern(command: string): string {
 		const parts = command.trim().split(/\s+/);
-		if (parts.length === 0) return command;
+		if (parts.length === 0) {
+			return command;
+		}
 
 		const baseCmd = parts[0];
 		const subCmd = parts.length > 1 ? parts[1] : '';
@@ -1843,7 +1872,9 @@ class ClaudeChatProvider {
 	private async _removePermission(toolName: string, command: string | null): Promise<void> {
 		try {
 			const storagePath = this._context.storageUri?.fsPath;
-			if (!storagePath) return;
+			if (!storagePath) {
+				return;
+			}
 
 			const permissionsUri = vscode.Uri.file(path.join(storagePath, 'permissions', 'permissions.json'));
 			let permissions: any = { alwaysAllow: {} };
@@ -1889,7 +1920,9 @@ class ClaudeChatProvider {
 	private async _addPermission(toolName: string, command: string | null): Promise<void> {
 		try {
 			const storagePath = this._context.storageUri?.fsPath;
-			if (!storagePath) return;
+			if (!storagePath) {
+				return;
+			}
 
 			const permissionsUri = vscode.Uri.file(path.join(storagePath, 'permissions', 'permissions.json'));
 			let permissions: any = { alwaysAllow: {} };
@@ -2258,7 +2291,7 @@ class ClaudeChatProvider {
 			// Always get all files and filter on the backend for better search results
 			const files = await vscode.workspace.findFiles(
 				'**/*',
-				'{**/node_modules/**,**/.git/**,**/dist/**,**/build/**,**/.next/**,**/.nuxt/**,**/target/**,**/bin/**,**/obj/**}',
+				'{**/node_modules/**,**/.git/**,**/dist/**,**/build/**,**/.next/**,**/.nuxt/**,**/target/**,**/bin/**,**/obj/**,**/.claude/**,**/.idea/**,**/.vscode-test/**,**/out/**,**/.vscode/**}',
 				500 // Reasonable limit for filtering
 			);
 
@@ -2414,11 +2447,12 @@ class ClaudeChatProvider {
 
 		this._isProcessing = false;
 
-		// Update UI state
 		this._postMessage({
 			type: 'setProcessing',
 			data: { isProcessing: false }
 		});
+
+		this._isInterrupted = true;
 
 		await this._killClaudeProcess();
 
@@ -2426,10 +2460,9 @@ class ClaudeChatProvider {
 			type: 'clearLoading'
 		});
 
-		// Send stop confirmation message directly to UI and save
 		this._sendAndSaveMessage({
-			type: 'error',
-			data: '⏹️ Claude code was stopped.'
+			type: 'system',
+			data: 'Claude code was stopped.'
 		});
 	}
 
@@ -2501,7 +2534,7 @@ class ClaudeChatProvider {
 					type: 'sessionCleared'
 				});
 
-				let requestStartTime: number
+				let requestStartTime: number;
 
 				// Small delay to ensure messages are cleared before loading new ones
 				setTimeout(() => {
@@ -2536,9 +2569,9 @@ class ClaudeChatProvider {
 						});
 						if (message.messageType === 'userInput') {
 							try {
-								requestStartTime = new Date(message.timestamp).getTime()
+								requestStartTime = new Date(message.timestamp).getTime();
 							} catch (e) {
-								console.log(e)
+								console.log(e);
 							}
 						}
 					}
@@ -2592,7 +2625,7 @@ class ClaudeChatProvider {
 			'wsl.enabled': config.get<boolean>('wsl.enabled', false),
 			'wsl.distro': config.get<string>('wsl.distro', 'Ubuntu'),
 			'wsl.nodePath': config.get<string>('wsl.nodePath', '/usr/bin/node'),
-			'wsl.claudePath': config.get<string>('wsl.claudePath', '/usr/local/bin/claude'),
+			'wsl.claudePath': config.get<string>('wsl.claudePath', 'ccr code'),
 			'permissions.yoloMode': config.get<boolean>('permissions.yoloMode', false)
 		};
 
@@ -2623,6 +2656,7 @@ class ClaudeChatProvider {
 	private _saveInputText(text: string): void {
 		this._draftMessage = text || '';
 	}
+
 
 	private async _updateSettings(settings: { [key: string]: any }): Promise<void> {
 		const config = vscode.workspace.getConfiguration('claudeCodeChat');
@@ -2680,7 +2714,7 @@ class ClaudeChatProvider {
 		const wslEnabled = config.get<boolean>('wsl.enabled', false);
 		const wslDistro = config.get<string>('wsl.distro', 'Ubuntu');
 		const nodePath = config.get<string>('wsl.nodePath', '/usr/bin/node');
-		const claudePath = config.get<string>('wsl.claudePath', '/usr/local/bin/claude');
+		const claudePath = config.get<string>('wsl.claudePath', 'ccr code');
 
 		// Build command arguments
 		const args = ['/model'];
@@ -2698,7 +2732,7 @@ class ClaudeChatProvider {
 		if (wslEnabled) {
 			terminal.sendText(`wsl -d ${wslDistro} ${nodePath} --no-warnings --enable-source-maps ${claudePath} ${args.join(' ')}`);
 		} else {
-			terminal.sendText(`claude ${args.join(' ')}`);
+			terminal.sendText(`ccr code ${args.join(' ')}`);
 		}
 		terminal.show();
 
@@ -2797,7 +2831,7 @@ class ClaudeChatProvider {
 		const wslEnabled = config.get<boolean>('wsl.enabled', false);
 		const wslDistro = config.get<string>('wsl.distro', 'Ubuntu');
 		const nodePath = config.get<string>('wsl.nodePath', '/usr/bin/node');
-		const claudePath = config.get<string>('wsl.claudePath', '/usr/local/bin/claude');
+		const claudePath = config.get<string>('wsl.claudePath', 'ccr code');
 
 		// Build command arguments
 		const args = [`/${command}`];
@@ -2815,7 +2849,7 @@ class ClaudeChatProvider {
 		if (wslEnabled) {
 			terminal.sendText(`wsl -d ${wslDistro} ${nodePath} --no-warnings --enable-source-maps ${claudePath} ${args.join(' ')}`);
 		} else {
-			terminal.sendText(`claude ${args.join(' ')}`);
+			terminal.sendText(`ccr code ${args.join(' ')}`);
 		}
 		terminal.show();
 
@@ -2857,7 +2891,9 @@ class ClaudeChatProvider {
 
 	private async _openFileInEditor(filePath: string) {
 		try {
-			const uri = vscode.Uri.file(filePath);
+			// Convert Windows backslashes to forward slashes for compatibility
+			const normalizedPath = filePath.replace(/\\/g, '/');
+			const uri = vscode.Uri.file(normalizedPath);
 			const document = await vscode.workspace.openTextDocument(uri);
 			await vscode.window.showTextDocument(document, vscode.ViewColumn.One);
 		} catch (error) {

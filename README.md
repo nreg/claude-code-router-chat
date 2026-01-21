@@ -1,354 +1,347 @@
-# 🚀 Claude Code Chat - Beautiful Claude Code Chat Interface for VS Code
+# 🚀 Claude Code Router Chat
 
 [![VS Code Extension](https://img.shields.io/badge/VS%20Code-Extension-blue?style=for-the-badge&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=andrepimenta.claude-code-chat)
 [![Claude Code](https://img.shields.io/badge/Powered%20by-Claude%20Code-orange?style=for-the-badge)](https://claude.ai/code)
 [![TypeScript](https://img.shields.io/badge/Built%20with-TypeScript-3178C6?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
 
-> **No more terminal commands. Chat with Claude Code through a beautiful, intuitive interface right inside VS Code.**
+> **不再需要终端命令。通过一个美丽直观的界面，在VS Code内部直接与Claude Code聊天。**
 
-Ditch the command line and experience Claude Code like never before. This extension brings a stunning chat interface directly into your editor, making AI assistance accessible, visual, and enjoyable.
+告别命令行，体验前所未有的Claude Code。此扩展程序将令人惊叹的聊天界面直接带入您的编辑器，使AI辅助变得触手可及、可视化且愉快。
 
-🤖 **Built by Claude Code for Claude Code** - This extension was entirely developed using Claude Code itself. Claude Code created its own chat interface!
-
----
-
-## ✨ **Why Choose Claude Code Chat?**
-
-🖥️ **No Terminal Required** - Beautiful chat interface replaces command-line interactions  
-⏪ **Restore Checkpoints** - Undo changes and restore code to any previous state   
-🔌 **MCP Server Support** - Complete Model Context Protocol server management   
-💾 **Conversation History** - Automatic conversation history and session management  
-🎨 **VS Code Native** - Claude Code integrated directly into VS Code with native theming and sidebar support  
-🧠 **Plan and Thinking modes** - Plan First and configurable Thinking modes for better results  
-⚡ **Smart File/Image Context and Custom Commands** - Reference any file, paste images or screenshots and create custom commands  
-🤖 **Model Selection** - Choose between Opus, Sonnet, or Default based on your needs  
-🐧 **Windows/WSL Support** - Full native Windows and WSL support
-
-![Claude Code Chat 1 0 0](https://github.com/user-attachments/assets/5954a74c-eff7-4205-8482-6a1c9de6e102)
-
+🤖 **由Claude Code为Claude Code打造** - 此扩展完全使用Claude Code本身开发。Claude Code创建了自己的聊天界面！
 
 ---
 
-## 🌟 **Key Features**
+## ✨ **为什么选择Claude Code Router Chat？**
 
-### 💬 **Beautiful Chat Graphical Interface**
-- No terminal required - everything through the UI
-- Real-time streaming responses with typing indicators
-- One-click message copying with visual feedback
-- Enhanced markdown support with syntax highlighting
-- Auto-resizing input that grows with your content
-- Copy-to-clipboard for code blocks
+🖥️ **无需终端** - 美观的聊天界面替代命令行交互
 
-### ⏪ **Checkpoint & Session Management**
-- **Restore Checkpoints** - Instantly undo changes and restore to any previous state
-- Automatic Git-based backup system for safe experimentation
-- Browse and restore from any conversation checkpoint
-- Automatic conversation saving and restoration
-- Real-time cost and token tracking
-- Session statistics and performance metrics
+⏪ **恢复检查点** - 撤销更改并恢复到任何先前状态
 
-### 📝 **Inline Diff Viewer** ⭐ **NEW IN V1.1**
-- **Full Diff Display** - See complete file changes directly in Edit, MultiEdit, and Write messages
-- **Open in VS Code Diff** - One-click button to open VS Code's native side-by-side diff editor
-- **Smart Truncation** - Long diffs are truncated with an expand button for better readability
-- **Syntax Highlighting** - Proper code highlighting in diff views
-- **Visual Change Indicators** - Clear green/red highlighting for additions and deletions
+🔌 **MCP Server支持** - 完整的Model Context Protocol服务器管理
 
-### 🔌 **MCP Server Management** ⭐ **NEW IN V1.0**
-- **Popular Servers Gallery** - One-click installation of common MCP servers
-- **Custom Server Creation** - Build and configure your own MCP servers
-- **Server Management** - Edit, delete, enable/disable servers through UI
-- **Automatic Integration** - Seamless permissions and tool integration
-- **Cross-platform Support** - Full WSL compatibility with path conversion
+💾 **对话历史** - 自动对话历史记录和会话管理
 
-### 🔒 **Advanced Permissions System** ⭐ **NEW IN V1.0**
-- **Interactive Permission Dialogs** - Detailed tool information with command previews
-- **Always Allow Functionality** - Smart command pattern matching for common tools (npm, git, docker)
-- **YOLO Mode** - Skip all permission checks for power users
-- **Workspace Permissions** - Granular control over what tools can execute
-- **Real-time Permission Management** - Add/remove permissions through intuitive UI
+🎨 **VS Code原生** - Claude Code直接集成到VS Code中，具有原生主题和侧边栏支持
 
-### 🖼️ **Image & Clipboard Support** ⭐ **NEW IN V1.0**
-- **Drag & Drop Images** - Simply drag images directly into the chat
-- **Clipboard Paste** - Press Ctrl+V to paste screenshots and copied images
-- **Multiple Image Selection** - Choose multiple images through VS Code's file picker
-- **Organized Storage** - Automatic organization in `.claude/claude-code-chat-images/`
-- **Format Support** - PNG, JPG, JPEG, GIF, SVG, WebP, BMP formats
+🧠 **计划和思维模式** - 计划优先和可配置的思维模式以获得更好的结果
 
-### 📱 **Sidebar Integration** ⭐ **NEW IN V1.0**
-- **Native VS Code Sidebar** - Full chat functionality in the sidebar panel
-- **Smart Panel Management** - Automatic switching between main and sidebar views
-- **Persistent Sessions** - State maintained across panel switches
-- **Activity Bar Integration** - Quick access from VS Code's activity bar
+⚡ **智能文件/图像上下文和自定义命令** - 引用任何文件，粘贴图片或屏幕截图并创建自定义命令
 
-### 📁 **Smart File Integration**
-- Type `@` to instantly search and reference workspace files
-- Image attachments via file browser and copy-paste screeshots
-- Lightning-fast file search across your entire project
-- Seamless context preservation for multi-file discussions
+🤖 **模型选择** - 根据您的需求在Opus、Sonnet或默认模型之间选择
 
-### 🛠️ **Tool Management**
-- Visual dashboard showing all available Claude Code tools
-- Real-time tool execution with formatted results
-- Process control - start, stop, and monitor operations
-- Smart permission system for secure tool execution
-
-### 🎨 **VS Code Integration**
-- Native theming that matches your editor
-- Status bar integration with connection status
-- Activity bar panel for quick access
-- Responsive design for any screen size
-
-### 🤖 **Model Selection**
-- **Opus** - Most capable model for complex tasks requiring deep reasoning
-- **Sonnet** - Balanced model offering great performance for most use cases
-- **Default** - Uses your configured model setting
-- Model preference persists across sessions and is saved automatically
-- Easy switching via dropdown selector in the chat interface
-- Visual confirmation when switching between models
-- One-click model configuration through integrated terminal
-
-### ⚡ **Slash Commands Integration**
-- **Slash Commands Modal** - Type "/" to access all Claude Code commands instantly
-- **23+ Built-in Commands** - /agents, /cost, /config, /memory, /review, and more
-- **Custom Command Support** - Execute any Claude Code command with session context
-- **Session-Aware Execution** - All commands run with current conversation context
-- **Terminal Integration** - Commands open directly in VS Code terminal with WSL support
-
-### 🧠 **Advanced AI Modes**
-- **Plan First Mode** - Toggle to make Claude plan before implementing changes
-- **Thinking Mode** - Configurable intensity levels (Think, Think Hard, Think Harder, Ultrathink)
-- **Mode Toggles** - Simple switches above the text input area
-- **Intelligent Prompting** - Different prompts based on selected thinking intensity
-- **Token Awareness** - Higher thinking levels consume more tokens but provide deeper reasoning
+🐧 **Windows/WSL支持** - 完整的原生Windows和WSL支持
 
 ---
 
-## 🚀 **Getting Started**
+## 🌟 **核心功能**
 
-### Prerequisites
-- **VS Code 1.80+** - Latest version recommended
-- **Claude Code CLI** - [Install from Anthropic](https://claude.ai/code)
-- **Active Claude API or subscription** - API or Pro/Max plan
+### 💬 **美丽的聊天图形界面**
+- 无需终端 - 所有操作通过UI完成
+- 实时流式响应和打字指示器
+- 一键消息复制并显示视觉反馈
+- 增强的markdown支持和语法高亮
+- 自适应输入框，根据内容自动调整大小
+- 代码块复制到剪贴板
 
-### Installation
+### ⏪ **检查点和会话管理**
+- **恢复检查点** - 立即撤销更改并恢复到任何先前状态
+- 基于Git的自动备份系统以确保安全实验
+- 浏览并从任何对话检查点恢复
+- 自动对话保存和恢复
+- 实时成本和令牌跟踪
+- 会话统计和性能指标
 
-1. **Install from VS Code Marketplace**
+### 📝 **内联Diff查看器** ⭐ **V1.1新增**
+- **完整Diff显示** - 在编辑、多编辑和写入消息中直接查看完整文件更改
+- **在VS Code Diff中打开** - 一键按钮打开VS Code的原生并排diff编辑器
+- **智能截断** - 长diff被截断并带有展开按钮以提高可读性
+- **语法高亮** - diff视图中的正确代码高亮
+- **视觉变更指示器** - 清晰的绿色/红色高亮显示添加和删除
+
+### 🔌 **MCP服务器管理** ⭐ **V1.0新增**
+- **流行服务器库** - 一键安装常见的MCP服务器
+- **自定义服务器创建** - 构建和配置自己的MCP服务器
+- **服务器管理** - 通过UI编辑、删除、启用/禁用服务器
+- **自动集成** - 无缝权限和工具集成
+- **跨平台支持** - 完整的WSL兼容性与路径转换
+
+### 🔒 **高级权限系统** ⭐ **V1.0新增**
+- **交互式权限对话框** - 详细的工具信息和命令预览
+- **始终允许功能** - 智能命令模式匹配常见工具（npm、git、docker）
+- **YOLO模式** - 跳过所有权限检查以供高级用户使用
+- **工作区权限** - 对什么工具可以执行的细粒度控制
+- **实时权限管理** - 通过直观的UI添加/删除权限
+
+### 🖼️ **图像和剪贴板支持** ⭐ **V1.0新增**
+- **拖放图像** - 直接将图像拖入聊天
+- **剪贴板粘贴** - 按Ctrl+V粘贴屏幕截图和复制的图像
+- **多图像选择** - 通过VS Code的文件选择器选择多个图像
+- **组织存储** - 自动在`.claude/claude-code-router-chat-images/`中组织
+- **格式支持** - PNG、JPG、JPEG、GIF、SVG、WebP、BMP格式
+
+### 📱 **侧边栏集成** ⭐ **V1.0新增**
+- **原生VS Code侧边栏** - 侧边栏面板中的完整聊天功能
+- **智能面板管理** - 在主视图和侧边栏视图间自动切换
+- **持久会话** - 面板切换时保持状态
+- **活动栏集成** - 通过VS Code的活动栏快速访问
+
+### 📁 **智能文件集成**
+- 输入`@`即可即时搜索和引用工作区文件
+- 通过文件浏览器和复制粘贴屏幕截图附加图像
+- 跨整个项目的闪电般快速文件搜索
+- 多文件讨论中无缝保持上下文
+
+### 🛠️ **工具管理**
+- 可视化仪表板显示所有可用的Claude Code工具
+- 实时工具执行和格式化结果
+- 进程控制 - 启动、停止和监控操作
+- 智能权限系统用于安全工具执行
+
+### 🎨 **VS Code集成**
+- 匹配您编辑器的原生主题
+- 状态栏集成连接状态
+- 活动栏面板快速访问
+- 响应式设计适用于任何屏幕尺寸
+
+### 🤖 **模型选择**
+- **Opus** - 最强大的模型，适合需要深度推理的复杂任务
+- **Sonnet** - 平衡模型，为大多数用例提供出色性能
+- **默认** - 使用您配置的模型设置
+- 模型偏好在会话间保持并自动保存
+- 通过聊天界面中的下拉选择器轻松切换
+- 切换模型时的视觉确认
+- 通过集成终端一键模型配置
+
+### ⚡ **斜杠命令集成**
+- **斜杠命令模态框** - 输入"/"即可访问所有Claude Code命令
+- **23+内置命令** - /agents、/cost、/config、/memory、/review等
+- **自定义命令支持** - 在会话上下文中执行任何Claude Code命令
+- **会话感知执行** - 所有命令都在当前对话上下文中运行
+- **终端集成** - 命令直接在VS Code终端中打开，支持WSL
+
+### 🧠 **高级AI模式**
+- **计划优先模式** - 切换以使Claude在实施更改前先计划
+- **思维模式** - 可配置的强度级别（Think、Think Hard、Think Harder、Ultrathink）
+- **模式切换** - 文本输入区域上方的简单开关
+- **智能提示** - 根据选定的思维强度级别使用不同提示
+- **令牌意识** - 更高的思维级别消耗更多令牌但提供更深层的推理
+
+---
+
+## 🚀 **入门指南**
+
+### 先决条件
+- **VS Code 1.80+** - 推荐最新版本
+- **Claude Code Router CLI** - [从Claude Code Router安装](https://github.com/musistudio/claude-code-router)
+- **活跃的Claude API或订阅** - API或Pro/Max计划
+```
+   npm install -g @musistudio/claude-code-router --registry=https://registry.npmmirror.com
+   ccr ui
+```
+### 安装
+
+1. **从VS Code市场安装**
    ```
-   ext install claude-code-chat
+   ext install claude-code-router-chat
    ```
 
-2. **Or install manually**
-   - Download the `.vsix` file from releases
-   - Run `code --install-extension claude-code-chat-x.x.x.vsix`
+2. **或手动安装**
+   - 从发布页面下载`.vsix`文件
+   - 运行`code --install-extension claude-code-router-chat-x.x.x.vsix`
 
-3. **Open Claude Code Chat**
-   - Press `Ctrl+Shift+C` (or `Cmd+Shift+C` on Mac)
-   - Or click the Claude icon in your status bar
-   - Or use Command Palette: `Claude Code: Open Chat`
-
----
-
-## 💡 **Usage Examples**
-
-### 🔥 **Code Review & Refactoring**
-```
-You: @src/components/UserProfile.tsx Can you review this component and suggest improvements?
-
-Claude: I'll analyze your UserProfile component. Looking at the code, here are my recommendations:
-
-1. **Performance Optimization**: Add React.memo() to prevent unnecessary re-renders
-2. **TypeScript Enhancement**: The props interface could be more specific
-3. **Accessibility**: Missing ARIA labels for screen readers
-
-[Detailed analysis with code examples follows...]
-```
-
-### 📊 **Project Analysis**
-```
-You: Analyze the overall architecture of my project and identify potential issues
-
-Claude: I'll examine your project structure and identify areas for improvement:
-
-🏗️ **Architecture Overview**
-- React frontend with TypeScript
-- Node.js backend with Express
-- MongoDB database layer
-
-⚠️ **Identified Issues**
-- Missing error boundaries in React components
-- Database queries lack proper indexing
-- API routes missing input validation
-
-[Detailed recommendations with implementation examples...]
-```
-
-### 🐛 **Debugging Assistant**
-```
-You: I'm getting a strange error in my API. Here's the stack trace: [paste error]
-
-Claude: Looking at this stack trace, the issue appears to be a race condition in your async middleware. Here's what's happening:
-
-1. **Root Cause**: Multiple requests are modifying shared state
-2. **Solution**: Implement proper request isolation
-3. **Prevention**: Add comprehensive error handling
-
-[Step-by-step debugging guide follows...]
-```
-
-### ⏪ **Safe Experimentation with Checkpoints**
-```
-You: Can you refactor this entire component to use hooks instead of class components?
-
-Claude: I'll refactor your component to use React hooks. Don't worry - I'll create a checkpoint first so you can easily restore if needed.
-
-[Creates automatic checkpoint]
-
-Here's the refactored component using hooks:
-[Shows the new implementation]
-
-If you want to revert these changes, just click "Restore Checkpoint" to go back to your original code instantly.
-```
+3. **打开Claude Code Router Chat**
+   - 按`Ctrl+Shift+C`（Mac上按`Cmd+Shift+C`）
+   - 或点击状态栏中的Claude图标
+   - 或使用命令面板：`Claude Code: Open Chat`
 
 ---
 
-## ⚙️ **Configuration**
+## 💡 **使用示例**
 
-### Keyboard Shortcuts
-| Shortcut | Action |
+### 🔥 **代码审查和重构**
+```
+You: @src/components/UserProfile.tsx 你能审查这个组件并提出改进建议吗？
+
+Claude: 我将分析您的UserProfile组件。查看代码，这里有我的建议：
+
+1. **性能优化**：添加React.memo()以防止不必要的重新渲染
+2. **TypeScript增强**：props接口可以更加具体
+3. **可访问性**：缺少屏幕阅读器的ARIA标签
+
+[详细的分析和代码示例...]
+```
+
+### 📊 **项目分析**
+```
+You: 分析我的项目的整体架构并识别潜在问题
+
+Claude: 我将检查您的项目结构并识别改进区域：
+
+🏗️ **架构概述**
+- 使用TypeScript的React前端
+- 使用Express的Node.js后端
+- MongoDB数据库层
+
+⚠️ **已识别问题**
+- React组件中缺少错误边界
+- 数据库查询缺少适当的索引
+- API路由缺少输入验证
+
+[详细建议和实施示例...]
+```
+
+### 🐛 **调试助手**
+```
+You: 我的API出现了奇怪的错误。这是堆栈跟踪：[粘贴错误]
+
+Claude: 看起来这个堆栈跟踪显示的是您的异步中间件中的竞态条件。发生的情况是：
+
+1. **根本原因**：多个请求正在修改共享状态
+2. **解决方案**：实现正确的请求隔离
+3. **预防措施**：添加全面的错误处理
+
+[逐步调试指南...]
+```
+
+### ⏪ **使用检查点的安全实验**
+```
+You: 你能将这个完整的组件重构为使用hooks而不是类组件吗？
+
+Claude: 我将重构您的组件以使用React hooks。不用担心 - 我会先创建一个检查点，这样您就可以轻松恢复。
+
+[自动创建检查点]
+
+这里是使用hooks重构的组件：
+[显示新的实现]
+
+如果您想恢复这些更改，只需点击"恢复检查点"即可立即回到原始代码。
+```
+
+---
+
+## ⚙️ **配置**
+
+### 键盘快捷键
+| 快捷键 | 动作 |
 |----------|--------|
-| `Ctrl+Shift+C` | Open Claude Code Chat |
-| `Enter` | Send message |
-| `@` | Open file picker |
-| `/` | Open slash commands modal |
+| `Ctrl+Shift+C` | 打开Claude Code Router Chat |
+| `Enter` | 发送消息 |
+| `@` | 打开文件选择器 |
+| `/` | 打开斜杠命令模态框 |
 
-### WSL Configuration (Windows Users)
-If you're using Claude Code through WSL (Windows Subsystem for Linux), you can configure the extension to use WSL:
+### WSL配置（Windows用户）
+如果您通过WSL（Windows子系统Linux）使用Claude Code，可以配置扩展程序使用WSL：
 
-1. Open VS Code Settings (`Ctrl+,` or `Cmd+,`)
-2. Search for "Claude Code Chat"
-3. Configure these settings:
-   - **Claude Code Chat: WSL Enabled** - Enable WSL integration
-   - **Claude Code Chat: WSL Distro** - Your WSL distribution name (e.g., `Ubuntu`, `Debian`)
-   - **Claude Code Chat: WSL Node Path** - Path to Node.js in WSL (default: `/usr/bin/node`)
-   - **Claude Code Chat: WSL Claude Path** - Path to Claude in WSL (default: `/usr/local/bin/claude`)
+1. 打开VS Code设置（`Ctrl+,`或`Cmd+,`）
+2. 搜索"Claude Code Router Chat"
+3. 配置这些设置：
+   - **Claude Code Router Chat: WSL Enabled** - 启用WSL集成
+   - **Claude Code Router Chat: WSL Distro** - 您的WSL发行版名称（例如`Ubuntu`、`Debian`）
+   - **Claude Code Router Chat: WSL Node Path** - WSL中的Node.js路径（默认：`/usr/bin/node`）
+   - **Claude Code Router Chat: WSL Claude Path** - WSL中的Claude路径（默认：`ccr code`）
 
-Example configuration in `settings.json`:
+`settings.json`中的示例配置：
 ```json
 {
-  "claudeCodeChat.wsl.enabled": true,
-  "claudeCodeChat.wsl.distro": "Ubuntu",
-  "claudeCodeChat.wsl.nodePath": "/usr/bin/node",
-  "claudeCodeChat.wsl.claudePath": "/usr/local/bin/claude"
+"claudeCodeChat.wsl.enabled": true,
+"claudeCodeChat.wsl.distro": "Ubuntu",
+"claudeCodeChat.wsl.nodePath": "/usr/bin/node",
+"claudeCodeChat.wsl.claudePath": "ccr code"
 }
 ```
 
 ---
 
-## 🎯 **Pro Tips & Tricks**
+## 🎯 **专业提示和技巧**
 
-### 🔥 **File Context Magic**
-- Type `@` followed by your search term to quickly reference files
-- Use `@src/` to narrow down to specific directories
-- Reference multiple files in one message for cross-file analysis
-- **NEW**: Copy-paste images directly into chat for visual context
-- **NEW**: Paste screenshots with Ctrl+V for instant visual communication
+### 🔥 **文件上下文魔法**
+- 输入`@`后跟搜索词可快速引用文件
+- 使用`@src/`缩小到特定目录
+- 在一条消息中引用多个文件进行跨文件分析
+- **新增**：直接将图像复制粘贴到聊天中以获得视觉上下文
+- **新增**：使用Ctrl+V粘贴屏幕截图以实现即时视觉通信
 
-### ⚡ **Productivity Boosters**
-- **Creates checkpoints automatically** before changes for safe experimentation
-- **Restore instantly** if changes don't work out as expected
-- **NEW**: Permission system prevents accidental tool execution
-- **NEW**: YOLO mode for power users who want speed over safety
-- Use the stop button to cancel long-running operations
-- Copy message contents to reuse Claude's responses
-- Open history panel to reference previous conversations
-- **NEW**: Sidebar integration for multi-panel workflow
+### ⚡ **生产力提升器**
+- **在更改前自动创建检查点**以进行安全实验
+- **如果更改不符合预期可立即恢复**
+- **新增**：权限系统防止意外工具执行
+- **新增**：YOLO模式供希望速度超过安全性的高级用户
+- 使用停止按钮取消长时间运行的操作
+- 复制消息内容以重复使用Claude的响应
+- 打开历史面板以参考之前的对话
+- **新增**：侧边栏集成以实现多面板工作流程
 
-### 🎨 **Interface Customization**
-- The UI automatically adapts to your VS Code theme
-- Messages are color-coded: Green for you, Blue for Claude
-- Hover over messages to reveal the copy button
-- **NEW**: Enhanced code block rendering with syntax highlighting
-- **NEW**: Copy-to-clipboard functionality for code blocks
-
----
-
-## 🔧 **Advanced Features**
-
-### 🛠️ **Tool Integration**
-Claude Code Chat provides secure access to all Claude Code tools:
-- **Bash** - Execute shell commands with permission controls
-- **File Operations** - Read, write, and edit files
-- **Search** - Grep and glob pattern matching across workspace
-- **Web** - Fetch and search web content
-- **Multi-edit** - Batch file modifications
-- **MCP Servers** - Extend functionality with Model Context Protocol servers
-- **Permissions System** - Granular control over tool execution for security
-
-### 📊 **Analytics & Monitoring**
-- **Real-time cost tracking** - Monitor your API usage
-- **Token consumption** - See input/output token counts
-- **Response timing** - Track performance metrics
-- **Session statistics** - Comprehensive usage analytics
-
-### ⏪ **Checkpoint System**
-- **Instant restoration** - One-click restore to any previous state
-- **Conversation checkpoints** - Every change creates a restore point
-- **Visual timeline** - See and navigate through all your project states
-
-### 🔄 **Conversation History**
-- **Automatic saving** - Every conversation is preserved
-- **Smart restoration** - Resume exactly where you left off
-- **Switch between chats** - Easily check and switch to previous conversations
+### 🎨 **界面定制**
+- UI会自动适应您的VS Code主题
+- 消息颜色编码：绿色代表您，蓝色代表Claude
+- 鼠标悬停在消息上显示复制按钮
+- **新增**：增强的代码块渲染和语法高亮
+- **新增**：代码块的复制到剪贴板功能
 
 ---
 
-## 🤝 **Contributing**
+## 🔧 **高级功能**
 
-We welcome contributions! Here's how you can help:
+### 🛠️ **工具集成**
+Claude Code Router Chat提供对所有Claude Code工具的安全访问：
+- **Bash** - 执行shell命令并进行权限控制
+- **文件操作** - 读取、写入和编辑文件
+- **搜索** - 在工作区中进行grep和glob模式匹配
+- **Web** - 获取和搜索网络内容
+- **多编辑** - 批量文件修改
+- **MCP服务器** - 通过Model Context Protocol服务器扩展功能
+- **权限系统** - 细粒度控制工具执行以确保安全
 
-1. **🐛 Report Bugs** - Use our issue tracker
-2. **💡 Suggest Features** - Share your ideas
-3. **🔧 Submit PRs** - Help us improve the codebase
-4. **📚 Improve Docs** - Make the documentation better
+### 📊 **分析和监控**
+- **实时成本追踪** - 监控API使用情况
+- **令牌消耗** - 查看输入/输出令牌数量
+- **响应时间** - 跟踪性能指标
+- **会话统计** - 全面的使用分析
 
-### Development Setup
+### ⏪ **检查点系统**
+- **即时恢复** - 一键恢复到任何先前状态
+- **对话检查点** - 每个更改都创建一个恢复点
+- **视觉时间线** - 查看并导航所有项目状态
+
+### 🔄 **对话历史**
+- **自动保存** - 每个对话都被保存
+- **智能恢复** - 在您离开的地方继续
+- **在聊天间切换** - 轻松查看和切换到之前的对话
+
+---
+
+## 🤝 **贡献**
+
+我们欢迎贡献！以下是您可以帮助的方式：
+
+1. **🐛 报告Bug** - 使用我们的问题跟踪器
+2. **💡 提出功能建议** - 分享您的想法
+3. **🔧 提交PR** - 帮助我们改进代码库
+4. **📚 改进文档** - 让文档变得更好
+
+### 开发设置
 ```bash
-git clone https://github.com/andrepimenta/claude-code-chat
-cd claude-code-chat
+git clone https://github.com/nreg/claude-code-router-chat
+cd claude-code-router-chat
 npm install
 
-Click "F5" to run the extension or access the "Run and Debug" section in VSCode
+点击"F5"运行扩展或在VSCode中访问"Run and Debug"部分
 ```
 
 ---
 
-## 📝 **License**
+## 📝 **许可证**
 
-See the [LICENSE](LICENSE) file for details.
-
----
-
-## 🙏 **Acknowledgments**
-
-- **Anthropic** - For creating the amazing Claude AI and more specifically the Claude Code SDK
-- **VS Code Team** - For the incredible extension platform
-- **Our Community** - For feedback, suggestions, and contributions
+详情见[LICENSE](LICENSE)文件。
 
 ---
 
-## 📞 **Support**
+## 🙏 **致谢**
 
-Need help? We've got you covered:
+- **Anthropic** - 为创建出色的Claude AI以及特别是Claude Code SDK
+- **VS Code团队** - 为令人难以置信的扩展平台
+- **[Claude Code Router](https://github.com/musistudio/claude-code-router)** 团队 - 为开源精神
+- **[Claude Code Chat](https://github.com/andrepimenta/claude-code-chat)** 团队 - 为开源精神
+- **我们的社区** - 为反馈、建议和贡献
 
-- 🐛 **Issues**: [GitHub Issues](https://github.com/andrepimenta/claude-code-chat/issues)
-
----
-
-<div align="center">
-
-**⭐ Star us on GitHub if this project helped you!**
-
-[**Download Now**](https://marketplace.visualstudio.com/items?itemName=andrepimenta.claude-code-chat)
-
-</div>

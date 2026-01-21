@@ -18,6 +18,15 @@ const styles = `
         display: flex;
         justify-content: space-between;
         align-items: center;
+        min-height: 52px;
+        box-sizing: border-box;
+    }
+
+    .header > div {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        box-sizing: border-box;
     }
 
     .header h2 {
@@ -53,6 +62,13 @@ const styles = `
         display: flex;
         align-items: center;
         gap: 5px;
+        outline: none;
+        box-sizing: border-box;
+        line-height: 1;
+        -webkit-tap-highlight-color: transparent;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
     }
 
     .btn:hover {
@@ -89,6 +105,32 @@ const styles = `
         opacity: 1;
     }
 
+    .btn:active {
+        transform: none;
+        padding: 6px 12px;
+        border: 1px solid var(--vscode-panel-border);
+    }
+
+    #newSessionBtn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: none;
+        box-sizing: border-box;
+        user-select: none;
+    }
+
+    #newSessionBtn svg {
+        pointer-events: none;
+    }
+
+    #newSessionBtn:active {
+        transform: none;
+        border: 1px solid var(--vscode-panel-border);
+        margin: 0;
+        box-sizing: border-box;
+    }
+
     /* Permission Request */
     .permission-request {
         margin: 4px 12px 20px 12px;
@@ -98,6 +140,8 @@ const styles = `
         padding: 16px;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         animation: slideUp 0.3s ease;
+        max-width: 100%;
+        width: fit-content;
     }
 
     .permission-header {
@@ -216,14 +260,14 @@ const styles = `
         margin-top: 2px;
         display: flex;
         gap: 8px;
-        justify-content: flex-end;
+        justify-content: center;
         flex-wrap: wrap;
     }
 
     .permission-buttons .btn {
         font-size: 12px;
         padding: 6px 12px;
-        min-width: 70px;
+        min-width: auto;
         text-align: center;
         display: inline-flex;
         align-items: center;
@@ -698,105 +742,85 @@ const styles = `
         margin-bottom: 10px;
         padding: 8px;
         border-radius: 4px;
+        line-height: 2.0;
     }
 
     .message.user {
-        border: 1px solid rgba(64, 165, 255, 0.2);
-        border-radius: 8px;
-        color: var(--vscode-editor-foreground);
+        border: 1px solid var(--vscode-panel-border);
+        background: var(--vscode-notificationCenterHeader-background);
+        border-radius: 8px 0 8px 8px;
         font-family: var(--vscode-editor-font-family);
+        font-size: 1.0em;
+        color: var(--vscode-notificationCenterHeader-foreground);
         position: relative;
         overflow: hidden;
-    }
-
-    .message.user::before {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        width: 4px;
-        background: linear-gradient(180deg, #40a5ff 0%, #0078d4 100%);
+        margin-left: auto;
+        max-width: 100%;
+        width: fit-content;
     }
 
     .message.claude {
-        border: 1px solid rgba(46, 204, 113, 0.1);
-        border-radius: 8px;
-        color: var(--vscode-editor-foreground);
+        border: 1px solid var(--vscode-panel-border);
+        background: var(--vscode-notifications-background);
+        border-radius: 0 8px 8px 8px;
+        font-family: var(--vscode-editor-font-family);
+        font-size: 1.0em;
+        color: var(--vscode-notifications-foreground);
         position: relative;
         overflow: hidden;
-    }
-
-    .message.claude::before {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        width: 4px;
-        background: linear-gradient(180deg, #2ecc71 0%, #27ae60 100%);
+        margin-right: auto;
+        max-width: 100%;
+        width: fit-content;
     }
 
     .message.error {
         border: 1px solid rgba(231, 76, 60, 0.3);
         border-radius: 8px;
+        font-family: var(--vscode-editor-font-family);
+        font-size: 0.9em;
         color: var(--vscode-editor-foreground);
+        opacity: 0.8;
         position: relative;
         overflow: hidden;
-    }
-
-    .message.error::before {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        width: 4px;
-        background: linear-gradient(180deg, #e74c3c 0%, #c0392b 100%);
+        max-width: 100%;
+        width: fit-content;
     }
 
     .message.system {
-        background-color: var(--vscode-panel-background);
-        color: var(--vscode-descriptionForeground);
-        font-style: italic;
+        font-family: var(--vscode-editor-font-family);
+        font-size: 0.8em;
+        color: var(--vscode-editor-foreground);
+        opacity: 0.8;
+        max-width: 100%;
+        width: fit-content;
     }
 
     .message.tool {
         border: 1px solid rgba(120, 139, 237, 0.12);
         border-radius: 8px;
+        font-family: var(--vscode-editor-font-family);
+        font-size: 0.9em;
         color: var(--vscode-editor-foreground);
+        opacity: 0.8;
         position: relative;
         overflow: hidden;
-    }
-
-    .message.tool::before {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        width: 4px;
-        background: linear-gradient(180deg, #7c8bed 0%, #5d6fe1 100%);
+        max-width: 100%;
+        width: fit-content;
     }
 
     .message.tool-result {
         border: 1px solid rgba(28, 192, 140, 0.2);
         border-radius: 8px;
         color: var(--vscode-editor-foreground);
-        font-family: var(--vscode-editor-font-family);
+        opacity: 0.8;
         white-space: pre-wrap;
         position: relative;
         overflow: hidden;
-    }
-
-    .message.tool-result::before {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        width: 4px;
-        background: linear-gradient(180deg, #1cc08c 0%, #16a974 100%);
+        max-width: 100%;
+        width: fit-content;
+        font-family: var(--vscode-editor-font-family);
+        font-size: 0.9em;
+        color: var(--vscode-editor-foreground);
     }
 
     .message.thinking {
@@ -804,20 +828,14 @@ const styles = `
         border-radius: 8px;
         color: var(--vscode-editor-foreground);
         font-family: var(--vscode-editor-font-family);
+        font-size: 0.9em;
         font-style: italic;
+        line-height: 1.8;
         opacity: 0.9;
         position: relative;
         overflow: hidden;
-    }
-
-    .message.thinking::before {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        width: 4px;
-        background: linear-gradient(180deg, #ba55d3 0%, #9932cc 100%);
+        max-width: 100%;
+        width: fit-content;
     }
 
     .tool-header {
@@ -827,21 +845,6 @@ const styles = `
         margin-bottom: 12px;
         padding-bottom: 8px;
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .tool-icon {
-        width: 18px;
-        height: 18px;
-        border-radius: 4px;
-        background: linear-gradient(135deg, #7c8bed 0%, #5d6fe1 100%);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 10px;
-        color: white;
-        font-weight: 600;
-        flex-shrink: 0;
-        margin-left: 6px;
     }
 
     .tool-info {
@@ -855,10 +858,13 @@ const styles = `
         display: flex;
         align-items: center;
         gap: 8px;
-        margin-bottom: 8px;
-        padding-bottom: 6px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        margin-bottom: 0;
+        padding-bottom: 2px;
         position: relative;
+    }
+
+    .message.user .message-header {
+        justify-content: flex-end;
     }
 
     .copy-btn {
@@ -885,36 +891,6 @@ const styles = `
         background-color: var(--vscode-list-hoverBackground);
     }
 
-    .message-icon {
-        width: 18px;
-        height: 18px;
-        border-radius: 3px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 10px;
-        color: white;
-        font-weight: 600;
-        flex-shrink: 0;
-        margin-left: 6px;
-    }
-
-    .message-icon.user {
-        background: linear-gradient(135deg, #40a5ff 0%, #0078d4 100%);
-    }
-
-    .message-icon.claude {
-        background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
-    }
-
-    .message-icon.system {
-        background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
-    }
-
-    .message-icon.error {
-        background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-    }
-
     .message-label {
         font-weight: 500;
         font-size: 12px;
@@ -929,15 +905,12 @@ const styles = `
 
     /* Code blocks generated by markdown parser only */
     .message-content pre.code-block {
-        background-color: var(--vscode-textCodeBlock-background);
-        border: 1px solid var(--vscode-panel-border);
         border-radius: 4px;
         padding: 12px;
-        margin: 8px 0;
         overflow-x: auto;
         font-family: var(--vscode-editor-font-family);
         font-size: 13px;
-        line-height: 1.5;
+        line-height: 1.8;
         white-space: pre;
     }
 
@@ -1400,6 +1373,13 @@ const styles = `
         background-color: var(--vscode-button-foreground);
     }
 
+    .mode-toggle-right {
+        margin-left: auto;
+        font-size: 9.5px;
+        color: var(--vscode-descriptionForeground);
+        opacity: 0.8;
+    }
+
     .textarea-container {
         display: flex;
         gap: 10px;
@@ -1426,8 +1406,9 @@ const styles = `
         border: none;
         padding: 12px;
         outline: none;
+        font-size: 12px;
         font-family: var(--vscode-editor-font-family);
-        min-height: 68px;
+        min-height: 148px;
         line-height: 1.4;
         overflow-y: hidden;
         resize: none;
@@ -1443,6 +1424,7 @@ const styles = `
         border: none;
         outline: none;
     }
+
 
     .input-controls {
         display: flex;
@@ -1594,19 +1576,6 @@ const styles = `
         display: flex;
         align-items: center;
         gap: 8px;
-    }
-
-    .yolo-warning {
-        font-size: 12px;
-        color: var(--vscode-foreground);
-        text-align: center;
-        font-weight: 500;
-        background-color: rgba(255, 99, 71, 0.08);
-        border: 1px solid rgba(255, 99, 71, 0.2);
-        padding: 8px 12px;
-        margin: 4px 4px;
-        border-radius: 4px;
-        animation: slideDown 0.3s ease;
     }
 
     .yolo-suggestion {
@@ -1824,7 +1793,7 @@ const styles = `
     }
 
     .tools-list {
-        padding: 20px;
+        padding: 20px 10px;
         max-height: 400px;
         overflow-y: auto;
     }
@@ -1933,12 +1902,12 @@ const styles = `
     /* Thinking intensity slider */
     .thinking-slider-container {
         position: relative;
-        padding: 0px 16px;
+        padding: 0px 5px;
         margin: 12px 0;
     }
 
     .thinking-slider {
-        width: 100%;
+        width: 460px;
         height: 4px;
         -webkit-appearance: none;
         appearance: none;
@@ -1982,7 +1951,7 @@ const styles = `
         display: flex;
         justify-content: space-between;
         margin-top: 12px;
-        padding: 0 8px;
+        padding: 0 4px;
     }
 
     .slider-label {
@@ -1991,7 +1960,7 @@ const styles = `
         opacity: 0.7;
         transition: all 0.2s ease;
         text-align: center;
-        width: 100px;
+        width: 50px;
         cursor: pointer;
     }
 
@@ -2004,14 +1973,6 @@ const styles = `
         opacity: 1;
         color: var(--vscode-foreground);
         font-weight: 500;
-    }
-
-    .slider-label:first-child {
-        margin-left: -50px;
-    }
-
-    .slider-label:last-child {
-        margin-right: -50px;
     }
 
     .settings-group {
@@ -3238,6 +3199,6 @@ const styles = `
         color: var(--vscode-descriptionForeground);
     }
 
-</style>`
+</style>`;
 
-export default styles
+export default styles;
