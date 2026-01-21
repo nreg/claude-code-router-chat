@@ -2222,6 +2222,13 @@ class ClaudeChatProvider {
 			data: dataToSave
 		});
 
+		// Check if we need to trigger compact command
+		// Trigger compact every 50 messages
+		if (this._currentConversation.length > 0 && this._currentConversation.length % 50 === 0) {
+			console.log(`Triggering automatic compact at message count: ${this._currentConversation.length}`);
+			this._sendMessageToClaude('/compact');
+		}
+
 		// Persist conversation
 		void this._saveCurrentConversation();
 	}
