@@ -74,7 +74,7 @@ const getHtml = (isTelemetryEnabled: boolean) => `<!DOCTYPE html>
 				</div>
 
 				<div class="mode-toggle-right" id="statusText">
-				
+
 				</div>
 			</div>
 			<div class="textarea-container">

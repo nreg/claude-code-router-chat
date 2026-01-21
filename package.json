@@ -152,27 +152,27 @@
     "configuration": {
       "title": "Claude Code Router Chat",
       "properties": {
-        "claudeCodeChat.wsl.enabled": {
+        "claudeCodeRouterChat.wsl.enabled": {
           "type": "boolean",
           "default": false,
           "description": "Enable WSL integration for running Claude"
         },
-        "claudeCodeChat.wsl.distro": {
+        "claudeCodeRouterChat.wsl.distro": {
           "type": "string",
           "default": "Ubuntu",
           "description": "WSL distribution name (e.g., Ubuntu, Debian)"
         },
-        "claudeCodeChat.wsl.nodePath": {
+        "claudeCodeRouterChat.wsl.nodePath": {
           "type": "string",
           "default": "/usr/bin/node",
           "description": "Path to Node.js in the WSL distribution"
         },
-        "claudeCodeChat.wsl.claudePath": {
+        "claudeCodeRouterChat.wsl.claudePath": {
           "type": "string",
           "default": "ccr code",
           "description": "Path to Claude executable in the WSL distribution"
         },
-        "claudeCodeChat.thinking.intensity": {
+        "claudeCodeRouterChat.thinking.intensity": {
           "type": "string",
           "enum": [
             "think",
@@ -183,7 +183,7 @@
           "default": "think",
           "description": "Thinking mode intensity level. Higher levels provide more detailed reasoning but consume more tokens."
         },
-        "claudeCodeChat.permissions.yoloMode": {
+        "claudeCodeRouterChat.permissions.yoloMode": {
           "type": "boolean",
           "default": false,
           "description": "Enable Yolo Mode to skip all permission checks. Use with caution as Claude can execute any command without asking."

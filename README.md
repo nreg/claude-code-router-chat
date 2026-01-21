@@ -244,10 +244,10 @@ Claude: 我将重构您的组件以使用React hooks。不用担心 - 我会先�
 `settings.json`中的示例配置：
 ```json
 {
-"claudeCodeChat.wsl.enabled": true,
-"claudeCodeChat.wsl.distro": "Ubuntu",
-"claudeCodeChat.wsl.nodePath": "/usr/bin/node",
-"claudeCodeChat.wsl.claudePath": "ccr code"
+"claudeCodeRouterChat.wsl.enabled": true,
+"claudeCodeRouterChat.wsl.distro": "Ubuntu",
+"claudeCodeRouterChat.wsl.nodePath": "/usr/bin/node",
+"claudeCodeRouterChat.wsl.claudePath": "ccr code"
 }
 ```
 

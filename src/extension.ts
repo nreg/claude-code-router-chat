@@ -41,7 +41,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// Listen for configuration changes
 	const configChangeDisposable = vscode.workspace.onDidChangeConfiguration(event => {
-		if (event.affectsConfiguration('claudeCodeChat.wsl')) {
+		if (event.affectsConfiguration('claudeCodeRouterChat.wsl')) {
 			console.log('WSL configuration changed, starting new session');
 			provider.newSessionOnConfigChange();
 		}
@@ -473,7 +473,7 @@ class ClaudeChatProvider {
 		const cwd = workspaceFolder ? workspaceFolder.uri.fsPath : process.cwd();
 
 		// Get thinking intensity setting
-		const configThink = vscode.workspace.getConfiguration('claudeCodeChat');
+		const configThink = vscode.workspace.getConfiguration('claudeCodeRouterChat');
 		const thinkingIntensity = configThink.get<string>('thinking.intensity', 'think');
 
 		// Prepend thinking mode instructions if enabled
@@ -541,7 +541,7 @@ class ClaudeChatProvider {
 		];
 
 		// Get configuration
-		const config = vscode.workspace.getConfiguration('claudeCodeChat');
+		const config = vscode.workspace.getConfiguration('claudeCodeRouterChat');
 		const yoloMode = config.get<boolean>('permissions.yoloMode', false);
 
 		if (yoloMode) {
@@ -849,6 +849,7 @@ class ClaudeChatProvider {
 				if (jsonData.message && jsonData.message.content) {
 					// Track token usage in real-time if available
 					if (jsonData.message.usage) {
+						// Add actual usage tokens to totals
 						this._totalTokensInput += jsonData.message.usage.input_tokens || 0;
 						this._totalTokensOutput += jsonData.message.usage.output_tokens || 0;
 
@@ -1166,7 +1167,7 @@ class ClaudeChatProvider {
 		});
 
 		// Get configuration to check if WSL is enabled
-		const config = vscode.workspace.getConfiguration('claudeCodeChat');
+		const config = vscode.workspace.getConfiguration('claudeCodeRouterChat');
 		const wslEnabled = config.get<boolean>('wsl.enabled', false);
 		const wslDistro = config.get<string>('wsl.distro', 'Ubuntu');
 		const nodePath = config.get<string>('wsl.nodePath', '/usr/bin/node');
@@ -2169,7 +2170,7 @@ class ClaudeChatProvider {
 	}
 
 	private convertToWSLPath(windowsPath: string): string {
-		const config = vscode.workspace.getConfiguration('claudeCodeChat');
+		const config = vscode.workspace.getConfiguration('claudeCodeRouterChat');
 		const wslEnabled = config.get<boolean>('wsl.enabled', false);
 
 		if (wslEnabled && windowsPath.match(/^[a-zA-Z]:/)) {
@@ -2619,7 +2620,7 @@ class ClaudeChatProvider {
 	}
 
 	private _sendCurrentSettings(): void {
-		const config = vscode.workspace.getConfiguration('claudeCodeChat');
+		const config = vscode.workspace.getConfiguration('claudeCodeRouterChat');
 		const settings = {
 			'thinking.intensity': config.get<string>('thinking.intensity', 'think'),
 			'wsl.enabled': config.get<boolean>('wsl.enabled', false),
@@ -2638,7 +2639,7 @@ class ClaudeChatProvider {
 	private async _enableYoloMode(): Promise<void> {
 		try {
 			// Update VS Code configuration to enable YOLO mode
-			const config = vscode.workspace.getConfiguration('claudeCodeChat');
+			const config = vscode.workspace.getConfiguration('claudeCodeRouterChat');
 
 			// Clear any global setting and set workspace setting
 			await config.update('permissions.yoloMode', true, vscode.ConfigurationTarget.Workspace);
@@ -2659,7 +2660,7 @@ class ClaudeChatProvider {
 
 
 	private async _updateSettings(settings: { [key: string]: any }): Promise<void> {
-		const config = vscode.workspace.getConfiguration('claudeCodeChat');
+		const config = vscode.workspace.getConfiguration('claudeCodeRouterChat');
 
 		try {
 			for (const [key, value] of Object.entries(settings)) {
@@ -2710,7 +2711,7 @@ class ClaudeChatProvider {
 	}
 
 	private _openModelTerminal(): void {
-		const config = vscode.workspace.getConfiguration('claudeCodeChat');
+		const config = vscode.workspace.getConfiguration('claudeCodeRouterChat');
 		const wslEnabled = config.get<boolean>('wsl.enabled', false);
 		const wslDistro = config.get<string>('wsl.distro', 'Ubuntu');
 		const nodePath = config.get<string>('wsl.nodePath', '/usr/bin/node');
@@ -2751,7 +2752,7 @@ class ClaudeChatProvider {
 
 	private _openUsageTerminal(usageType: string): void {
 		// Get WSL configuration
-		const config = vscode.workspace.getConfiguration('claudeCodeChat');
+		const config = vscode.workspace.getConfiguration('claudeCodeRouterChat');
 		const wslEnabled = config.get<boolean>('wsl.enabled', false);
 		const wslDistro = config.get<string>('wsl.distro', 'Ubuntu');
 
@@ -2827,7 +2828,7 @@ class ClaudeChatProvider {
 			return;
 		}
 
-		const config = vscode.workspace.getConfiguration('claudeCodeChat');
+		const config = vscode.workspace.getConfiguration('claudeCodeRouterChat');
 		const wslEnabled = config.get<boolean>('wsl.enabled', false);
 		const wslDistro = config.get<string>('wsl.distro', 'Ubuntu');
 		const nodePath = config.get<string>('wsl.nodePath', '/usr/bin/node');
@@ -2871,7 +2872,7 @@ class ClaudeChatProvider {
 		const dismissed = this._context.globalState.get<boolean>('wslAlertDismissed', false);
 
 		// Get WSL configuration
-		const config = vscode.workspace.getConfiguration('claudeCodeChat');
+		const config = vscode.workspace.getConfiguration('claudeCodeRouterChat');
 		const wslEnabled = config.get<boolean>('wsl.enabled', false);
 
 		this._postMessage({

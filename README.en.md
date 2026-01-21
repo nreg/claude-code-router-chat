@@ -235,10 +235,10 @@ If you're using Claude Code through WSL (Windows Subsystem for Linux), you can c
 Example configuration in `settings.json`:
 ```json
 {
-  "claudeCodeChat.wsl.enabled": true,
-  "claudeCodeChat.wsl.distro": "Ubuntu",
-  "claudeCodeChat.wsl.nodePath": "/usr/bin/node",
-  "claudeCodeChat.wsl.claudePath": "ccr code"
+  "claudeCodeRouterChat.wsl.enabled": true,
+  "claudeCodeRouterChat.wsl.distro": "Ubuntu",
+  "claudeCodeRouterChat.wsl.nodePath": "/usr/bin/node",
+  "claudeCodeRouterChat.wsl.claudePath": "ccr code"
 }
 ```
 
