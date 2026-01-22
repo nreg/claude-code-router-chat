@@ -2223,9 +2223,12 @@ class ClaudeChatProvider {
 		});
 
 		// Check if we need to trigger compact command
-		// Trigger compact every 50 messages
-		if (this._currentConversation.length > 0 && this._currentConversation.length % 50 === 0) {
-			console.log(`Triggering automatic compact at message count: ${this._currentConversation.length}`);
+		// Trigger compact every 50 messages (only counting userInput and output messages)
+		const userAndClaudeMessages = this._currentConversation.filter(m =>
+			m.messageType === 'userInput' || m.messageType === 'output'
+		);
+		if (userAndClaudeMessages.length > 0 && userAndClaudeMessages.length % 50 === 0) {
+			console.log(`Triggering automatic compact at user/Claude message count: ${userAndClaudeMessages.length}`);
 			this._sendMessageToClaude('/compact');
 		}
 
