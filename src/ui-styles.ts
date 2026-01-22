@@ -912,6 +912,7 @@ const styles = `
         font-size: 13px;
         line-height: 1.8;
         white-space: pre;
+        margin: 0;
     }
 
     .message-content pre.code-block code {
@@ -919,11 +920,16 @@ const styles = `
         border: none;
         padding: 0;
         color: var(--vscode-editor-foreground);
+        font-family: var(--vscode-editor-font-family);
+        font-size: 13px;
+        line-height: 1.8;
+        white-space: pre;
     }
 
-    .code-line {
-        white-space: pre-wrap;
-        word-break: break-word;
+    /* Highlight.js syntax highlighting */
+    .message-content pre.code-block code.hljs {
+        color: var(--vscode-editor-foreground);
+        background: transparent;
     }
 
     /* Code block container and header */
