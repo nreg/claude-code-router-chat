@@ -11,7 +11,7 @@ Ditch the command line and experience Claude Code like never before. This extens
 🤖 **Built by Claude Code for Claude Code** - This extension was entirely developed using Claude Code itself. Claude Code created its own chat interface!
 
 ---
-
+![F:/nreg/desktop/pictures/typora/Typora image storage space/数字人相关/ccrc.png](https://nrbg-1251769685.cos.ap-chengdu.myqcloud.com/typora/bfb102ea14b14c5f953f825434d6ffa.png)
 ## ✨ **Why Choose Claude Code Router Chat?**
 
 🖥️ **No Terminal Required** - Beautiful chat interface replaces command-line interactions  

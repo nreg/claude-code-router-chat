@@ -11,7 +11,7 @@
 🤖 **由Claude Code为Claude Code打造** - 此扩展完全使用Claude Code本身开发。Claude Code创建了自己的聊天界面！
 
 ---
-
+![F:/nreg/desktop/pictures/typora/Typora image storage space/数字人相关/ccrc.png](https://nrbg-1251769685.cos.ap-chengdu.myqcloud.com/typora/bfb102ea14b14c5f953f825434d6ffa.png)
 ## ✨ **为什么选择Claude Code Router Chat？**
 
 🖥️ **无需终端** - 美观的聊天界面替代命令行交互
